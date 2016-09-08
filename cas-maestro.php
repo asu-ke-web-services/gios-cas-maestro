@@ -446,10 +446,7 @@ class CAS_Maestro {
     $user = wp_get_current_user();
     if(empty($user->user_email)) {
       echo '<div class="updated">
-         <p>'.sprintf(__('You don\'t have a email set. You need to set a email to get ride of this message...
-          <a href="%s"> Click here </a> to access your profile. ',
-          'CAS_Maestro'), admin_url('profile.php')).
-         '</p>
+         <p>' . sprintf(__('You haven\'t filled out your profile yet. You need to at least enter your name and email address to begin using this site. <a href="%s"> Click here </a> to access your profile. ', 'CAS_Maestro'), admin_url('profile.php')) . '</p>
       </div>';
     }
   }
