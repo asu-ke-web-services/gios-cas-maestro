@@ -171,8 +171,7 @@ class CAS_Maestro {
         add_action('password_reset', array(&$this, 'disable_function'));
         add_filter('show_password_fields', array(&$this, 'show_password_fields'));
       } else {
-        $error = __("wpCAS is not configured. Please, login, go to the settings and configure with your credentials.",
-      "CAS_Maestro");
+        $error = __("wpCAS is not configured. Please, login, go to the settings and configure with your credentials.", "CAS_Maestro");
         //add_filter( 'login_head', array(&$this, 'display_login_notconfigured'));
       }
 
