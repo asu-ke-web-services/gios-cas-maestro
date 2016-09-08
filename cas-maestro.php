@@ -16,10 +16,10 @@ Text Domain: CAS_Maestro
 */
 
 // plugin folder url
-if(!defined('CAS_MAESTRO_PLUGIN_URL')) 
+if(!defined('CAS_MAESTRO_PLUGIN_URL'))
 	define('CAS_MAESTRO_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 
-if(!defined('CAS_MAESTRO_PLUGIN_PATH')) 
+if(!defined('CAS_MAESTRO_PLUGIN_PATH'))
 	define('CAS_MAESTRO_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 
 //Mailing type
@@ -54,7 +54,7 @@ class CAS_Maestro {
 	/*--------------------------------------------*
 	 * Constructor
 	 *--------------------------------------------*/
- 
+
 	/**
 	 * Initializes the plugin by setting localization, filters, and administration functions.
 	 */
@@ -100,7 +100,7 @@ class CAS_Maestro {
  		//Get blog settings. If they doesn't exist, get the network settings.
  		$this->settings = get_option('wpCAS_settings',$this->network_settings);
  		$this->phpcas_path = get_option('wpCAS_phpCAS_path',CAS_MAESTRO_PLUGIN_PATH.'phpCAS/CAS.php');
- 		$this->allowed_users = get_option('wpCAS_allowed_users',array());	
+ 		$this->allowed_users = get_option('wpCAS_allowed_users',array());
  		$this->change_users_capability = 'edit_posts';
 
  		if(!isset($_SESSION))
@@ -111,8 +111,8 @@ class CAS_Maestro {
 
  		$this->init(!$this->bypass_cas);
 
-	} 
- 
+	}
+
 
  	/**
 	 * Plugin initialization, action & filters register, etc
@@ -131,26 +131,26 @@ class CAS_Maestro {
 
 			if ($this->cas_configured) {
 				//If everything is alright, let's initialize the phpCAS client
-				phpCAS::client($this->settings['cas_version'], 
-					$this->settings['server_hostname'], 
-					intval($this->settings['server_port']), 
+				phpCAS::client($this->settings['cas_version'],
+					$this->settings['server_hostname'],
+					intval($this->settings['server_port']),
 					$this->settings['server_path'],
 					false);
-				  
+
 				// function added in phpCAS v. 0.6.0
 				// checking for static method existance is frustrating in php4
 				$phpCas = new phpCas();
 				if (method_exists($phpCas, 'setNoCasServerValidation'))
 					phpCAS::setNoCasServerValidation();
 				unset($phpCas);
-				// if you want to set a cert, replace the above few lines	
+				// if you want to set a cert, replace the above few lines
 
 				if(defined('CAS_MAESTRO_DEBUG_ON') && CAS_MAESTRO_DEBUG_ON == true)
 					phpCAS::setDebug(CAS_MAESTRO_PLUGIN_PATH . 'debug.log');
 
 				/**
 				 * Filters and actions registration
-				 */		
+				 */
 				add_filter('authenticate', array(&$this, 'validate_login'), 30, 3);
 				add_filter('login_url', array(&$this, 'bypass_reauth'));
 				add_action('lost_password', array(&$this, 'disable_function'));
@@ -203,7 +203,7 @@ class CAS_Maestro {
 	}
 
 	/*----------------------------------------------*
-	 * Authentication managment      
+	 * Authentication managment
 	 *----------------------------------------------*/
 
 	function validate_noncas_login($user, $username, $password) {
@@ -216,7 +216,7 @@ class CAS_Maestro {
 		return $user;
 	}
 
-	/** 
+	/**
 	 * Validate the login using CAS
 	 */
 	function validate_login($null, $username, $password) {
@@ -243,13 +243,13 @@ class CAS_Maestro {
 					!is_user_member_of_blog( $user->ID, get_current_blog_id() )) {
 						$nextrole = $this->canUserRegister($username);
 						add_user_to_blog(get_current_blog_id(), $user->ID, $nextrole);
-				}	
+				}
 			}
 	    	return $user;
 	    }
 
 	    /** Register a new user, if it is allowed */
-	    if ($user_role = $this->canUserRegister($username)) {  
+	    if ($user_role = $this->canUserRegister($username)) {
 			$user_email = '';
 			$email_registration = $this->settings['e-mail_registration'];
 			//How does the site is configured to get the email?
@@ -264,13 +264,13 @@ class CAS_Maestro {
 					ldap_set_option($ds, LDAP_OPT_RESTART, TRUE);
 
 					$r=ldap_bind($ds,$this->settings['ldap_username_rdn'],$this->settings['ldap_password']);
-					  
-					$list = ldap_list($ds, $this->settings['ldap_basedn'], 
+
+					$list = ldap_list($ds, $this->settings['ldap_basedn'],
 						"uid=$username");
 
 					if ($list !== FALSE){
 						$result = ldap_get_entries($ds, $list);
-						
+
 						if ($result['count'] > 0){
 							$result = $result[0];
 							if (isset($result['mail']) && is_array($result['mail'])){
@@ -290,7 +290,7 @@ class CAS_Maestro {
 
 			}
 
-			  
+
 			$user_info = array();
 			$user_info['user_pass'] = $password;
 			$user_info['user_email'] = $user_email;
@@ -325,7 +325,7 @@ class CAS_Maestro {
 			$caserror_file = get_template_directory() . '/cas_error.php';
 			include( file_exists($caserror_file) ? $caserror_file : "cas_error.php" );
 		    exit();
-			
+
 		}
 	}
 
@@ -350,7 +350,7 @@ class CAS_Maestro {
 
 		//Verify if there was a role change
 		$waiting = get_user_meta($user_id,'_wpcas_waiting',true);
-		if(!empty($waiting) && !in_array('subscriber',$user->roles) 
+		if(!empty($waiting) && !in_array('subscriber',$user->roles)
 			&& $this->settings['wait_mail']['send_user']) {
 			delete_user_meta($user_id,'_wpcas_waiting');
 			//user permissions have been given, notify the user
@@ -363,7 +363,7 @@ class CAS_Maestro {
 		if($this->bypass_cas) {
 			if( $path=='wp-login.php' ||
 				$path=='wp-login.php?action=register' ||
-				$path == 'wp-login.php?action=lostpassword' )  
+				$path == 'wp-login.php?action=lostpassword' )
 				return add_query_arg('wp', '', $url);
 		}
 		return $url;
@@ -378,7 +378,7 @@ class CAS_Maestro {
 		else
 		    phpCAS::logoutWithRedirectService(get_option('siteurl'));
 	    exit();
-	}	
+	}
 
 	/**
      * Remove the reauth=1 parameter from the login URL, if applicable. This allows
@@ -397,7 +397,7 @@ class CAS_Maestro {
     function show_password_fields($show_password_fields) {
       return false;
     }
-    
+
     /**
      * Disable a function. To be hooked to a action
      */
@@ -406,14 +406,14 @@ class CAS_Maestro {
     }
 
 	/*----------------------------------------------*
-	 * Administration Interface Functions      
+	 * Administration Interface Functions
 	 *----------------------------------------------*/
 
 	function notify_email_update(){
 		$user = wp_get_current_user();
 		if(empty($user->user_email)) {
 	    echo '<div class="updated">
-	       <p>'.sprintf(__('You don\'t have a email set. You need to set a email to get ride of this message... 
+	       <p>'.sprintf(__('You don\'t have a email set. You need to set a email to get ride of this message...
 	       	<a href="%s"> Click here </a> to access your profile. ',
 	       	'CAS_Maestro'), admin_url('profile.php')).
 	       '</p>
@@ -423,34 +423,34 @@ class CAS_Maestro {
 
 	function register_menus() {
 		// If you wanna change the capability to edit authorized users, filter on this hook.
- 		$this->change_users_capability = apply_filters('cas_maestro_change_users_capability', 
+ 		$this->change_users_capability = apply_filters('cas_maestro_change_users_capability',
  			$this->change_users_capability);
 
 		if( current_user_can( 'manage_options' ) ) {
 			switch($this->settings['cas_menu_location']) {
 				case 'sidebar':
-						$settings_page = add_menu_page(__('CAS Maestro Settings', "CAS_Maestro"), 
-							__('CAS Maestro', "CAS_Maestro"), 
-							'manage_options', 
-							'wpcas_settings', 
+						$settings_page = add_menu_page(__('CAS Maestro Settings', "CAS_Maestro"),
+							__('CAS Maestro', "CAS_Maestro"),
+							'manage_options',
+							'wpcas_settings',
 							array(&$this,'admin_interface'),
 							'',
 							214);
 					break;
 				case 'settings':
 				default:
-					$settings_page = add_options_page(__('CAS Maestro', "CAS_Maestro"), 
-						__('CAS Maestro', "CAS_Maestro"), 8, 
-						'wpcas_settings', 
+					$settings_page = add_options_page(__('CAS Maestro', "CAS_Maestro"),
+						__('CAS Maestro', "CAS_Maestro"), 8,
+						'wpcas_settings',
 						array(&$this,'admin_interface'));
 					break;
 			}
-		} else if( !current_user_can( 'manage_options' )  
+		} else if( !current_user_can( 'manage_options' )
 			&& current_user_can( $this->change_users_capability ) ) {
-			$settings_page = add_menu_page(__('CAS Maestro Settings', "CAS_Maestro"), 
-							__('CAS Maestro', "CAS_Maestro"), 
-							$this->change_users_capability, 
-							'wpcas_settings', 
+			$settings_page = add_menu_page(__('CAS Maestro Settings', "CAS_Maestro"),
+							__('CAS Maestro', "CAS_Maestro"),
+							$this->change_users_capability,
+							'wpcas_settings',
 							array(&$this,'admin_interface'),
 							'',
 							214);
@@ -462,7 +462,7 @@ class CAS_Maestro {
 		//Metabox General Settings
 		foreach($this->settings_hook as $settings_hook) {
 
-			if(current_user_can('manage_options')) 
+			if(current_user_can('manage_options'))
 				add_meta_box(
 					'wpcas_general_settings',
 					__( 'General Settings', 'CAS_Maestro'),
@@ -485,7 +485,7 @@ class CAS_Maestro {
 			);
 
 			//Metabox mailing settings
-			if(current_user_can('manage_options')) 
+			if(current_user_can('manage_options'))
 				add_meta_box(
 					'wpcas_mailing',
 					__( 'Mailing', 'CAS_Maestro'),
@@ -497,7 +497,7 @@ class CAS_Maestro {
 				);
 
 			//SIDE META BOXES
-			if(current_user_can('manage_options')) 
+			if(current_user_can('manage_options'))
 				add_meta_box(
 					'wpcas_pdates',
 					__( 'Important note', 'CAS_Maestro'),
@@ -531,7 +531,7 @@ class CAS_Maestro {
 		if(in_array($hook, $this->settings_hook)) {
 
 			wp_enqueue_script( 'select2-script', plugins_url('/js/select2/select2.js', __FILE__));
-			wp_enqueue_style( 'select2', plugins_url('/js/select2/select2.css', __FILE__)); 
+			wp_enqueue_style( 'select2', plugins_url('/js/select2/select2.css', __FILE__));
 
 			wp_enqueue_script( 'autoinput', plugins_url('/js/autoinput.js', __FILE__) );
 			wp_enqueue_script( 'validations', plugins_url('/js/validations.js', __FILE__) );
@@ -579,7 +579,7 @@ class CAS_Maestro {
 	function save_settings() {
 		if(current_user_can('manage_options')) {
 			$optionarray_update = array (
-				//CAS Settings				
+				//CAS Settings
 				'cas_version' => $_POST['cas_version'],
 				'server_hostname' => $_POST['server_hostname'],
 				'server_port' => $_POST['server_port'],
@@ -620,7 +620,7 @@ class CAS_Maestro {
 				'server_hostname',
 				'server_port'
 				);
-			if($optionarray_update['e-mail_registration'] == 3) { 
+			if($optionarray_update['e-mail_registration'] == 3) {
 				//If LDAP is selected
 				$new_mandatory = array(
 					'ldap_server',
@@ -631,8 +631,8 @@ class CAS_Maestro {
 
 			//Create an update array without empty fields
 			$updated_array = $optionarray_update;
-			
-			$this->settings = array_merge($this->settings,$updated_array);	
+
+			$this->settings = array_merge($this->settings,$updated_array);
 			update_option('wpCAS_settings',$this->settings);
 		}
 
@@ -662,7 +662,7 @@ class CAS_Maestro {
 	}
 
 	/*----------------------------------------------*
-	 * Auxiliary Functions      
+	 * Auxiliary Functions
 	 *----------------------------------------------*/
 
 	/**
@@ -675,7 +675,7 @@ class CAS_Maestro {
 
 		if($this->settings['new_user'])
 			return true; //User global registration is enabled
-		
+
 		return false;
 	}
 
@@ -705,7 +705,7 @@ class CAS_Maestro {
 				$user_subject = $this->settings['welcome_mail']['subject'];
 				//Set the boolean variables
 				$send_user = $this->settings['welcome_mail']['send_user'];
-				$send_global = $this->settings['welcome_mail']['send_global'];				
+				$send_global = $this->settings['welcome_mail']['send_global'];
 
 				break;
 			case WPCAS_WAITACCESS_MAIL:
@@ -714,7 +714,7 @@ class CAS_Maestro {
 				$user_subject = $this->settings['wait_mail']['subject'];
 				//Set the boolean variables
 				$send_user = $this->settings['wait_mail']['send_user'];
-				$send_global = $this->settings['wait_mail']['send_global'];	
+				$send_global = $this->settings['wait_mail']['send_global'];
 
 				break;
 			default:
@@ -722,7 +722,7 @@ class CAS_Maestro {
 		}
 
 		$from = (empty($this->settings['full_name']) ? get_bloginfo('name') : $this->settings['full_name']);
-        $message_headers = "MIME-Version: 1.0\n" . "From: " . $from .  
+        $message_headers = "MIME-Version: 1.0\n" . "From: " . $from .
 			" <{$from_mail}>\n" . "Content-Type: text/plain; charset=" . get_option('blog_charset') . "\n";
 
 		/**
@@ -750,9 +750,9 @@ class CAS_Maestro {
 			$send_global = false;
 
 		if($send_user)
-	    	wp_mail($user_info['user_email'], $subject, $user_body, $message_headers); 
+	    	wp_mail($user_info['user_email'], $subject, $user_body, $message_headers);
 	    if($send_global)
-	    	wp_mail($from_mail, $subject, $global_body, $message_headers); 
+	    	wp_mail($from_mail, $subject, $global_body, $message_headers);
 
 	}
  }

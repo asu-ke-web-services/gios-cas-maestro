@@ -14,8 +14,8 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 		@ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, $version);
 		@ldap_set_option($ds, LDAP_OPT_RESTART, TRUE);
 
-		if($r=@ldap_bind($ds,$username,$password)) {  
-			$list = @ldap_list($ds, $basedn, 
+		if($r=@ldap_bind($ds,$username,$password)) {
+			$list = @ldap_list($ds, $basedn,
 				"uid=$uid");
 
 			if ($list !== FALSE && isset($uid)){
@@ -24,7 +24,7 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 					echo json_encode(1);
 				} else {
 					echo json_encode(0);
-				}			
+				}
 			} else {
 				echo json_encode(1);
 			}

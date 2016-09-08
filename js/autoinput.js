@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-    
+
     var MaxTextBoxes = 99;
     $(function () {
         //answer choices
@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
             //new answer possible, just add a new textbox
             CurrentTextboxes++;
             var newTxtBox = '<tr><td class="prefix"><input type="text" class="istid" name="username['+CurrentTextboxes+']" id="txt' + CurrentTextboxes + '" style="width: 150px;"></input></td><td><select name="role['+CurrentTextboxes+']" style="width: 180px;">'+options+'</select></td></tr>';
-            
+
             var newTxtBox1 = $('<input>').addClass('istid').attr('type', 'text').attr('name','username[' + CurrentTextboxes + ']').width(150).attr('id','txt' + CurrentTextboxes);
             var newTxtBox2 = $('<select>').attr('name','role[' + CurrentTextboxes + ']').width(180).html(options);
 
@@ -44,7 +44,7 @@ jQuery(document).ready(function($) {
             var penultimateTxtBox = $('table#autoAdd input#txt'+(CurrentTextboxes-1));
             var numOfChars = $(penultimateTxtBox).val().length;
 
-            if (numOfChars == 0) { 
+            if (numOfChars == 0) {
                 $('table#autoAdd tr:last').remove();
                 CurrentTextboxes--;
                 //rebind

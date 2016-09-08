@@ -5,14 +5,14 @@
          <td colspan="2">
           <?php _e("All mails are sent from a unique sender. This sender may recieve notification emails alerting for new users and/or activations, estabilished by the following configuration.", 'CAS_Maestro'); ?>
        </tr>
-       <tr valign="center"> 
-        <th width="150px" scope="row"><?php _e("E-mail address:", 'CAS_Maestro'); ?>*</th> 
+       <tr valign="center">
+        <th width="150px" scope="row"><?php _e("E-mail address:", 'CAS_Maestro'); ?>*</th>
         <td><input type="text" placeholder="" name="global_sender" id="email_suffix_inp" value="<?php echo $settings['global_sender']; ?>" size="35" /></td>
       </tr>
-       <tr valign="center"> 
-        <th width="150px" scope="row"><?php _e("Full name:", 'CAS_Maestro'); ?></th> 
+       <tr valign="center">
+        <th width="150px" scope="row"><?php _e("Full name:", 'CAS_Maestro'); ?></th>
         <td><input type="text" placeholder="" name="full_name" id="full_name_suffix_inp" value="<?php echo $settings['full_name']; ?>" size="35" /></td>
-      </tr>      
+      </tr>
     </table>
 
     <h2><?php _e("Mails", 'CAS_Maestro'); ?></h2>
@@ -34,7 +34,7 @@
         <div class="mail_body">
           <div>
             <p><?php _e("Message body sent to the User", 'CAS_Maestro'); ?></p>
-            <textarea type="text" name="welcome_user_body" id="user_email_suffix_inp"><?php echo $this->settings['welcome_mail']['user_body']?></textarea>          
+            <textarea type="text" name="welcome_user_body" id="user_email_suffix_inp"><?php echo $this->settings['welcome_mail']['user_body']?></textarea>
           </div>
           <div>
             <p><?php _e("Message body sent to the Sender", 'CAS_Maestro'); ?></p>
@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      
+
       <div id="wait_for_access">
         <p><input name="wait_send_user" type="checkbox" id="new_user_inp2" value="1" <?php checked('1', $this->settings['wait_mail']['send_user']); ?> /><label for="new_user_inp2"><?php _e("Send to the User", 'CAS_Maestro'); ?></label><input name="wait_send_global" type="checkbox" id="new_user_inp3" value="1" <?php checked('1', $this->settings['wait_mail']['send_global']); ?> /><label for="new_user_inp3"><?php _e("Send to the Sender", 'CAS_Maestro'); ?></label></p>
         <h2><?php _e("Subject", 'CAS_Maestro'); ?></h2>

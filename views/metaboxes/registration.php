@@ -1,4 +1,4 @@
-<?php 
+<?php
 $raw_roles = get_editable_roles();
 
 //Get number of allowed users
@@ -41,14 +41,14 @@ foreach($raw_roles as $role => $value) {
               </td>
             </tr>
             <tr valign="center">
-              <th width="150px" scope="row"><?php _e("Server hostname", 'CAS_Maestro'); ?>* <br /><span><?php echo sprintf(__("(with %s or %s)", 'CAS_Maestro'), 'ldap://', 'ldaps://'); ?></span></th> 
+              <th width="150px" scope="row"><?php _e("Server hostname", 'CAS_Maestro'); ?>* <br /><span><?php echo sprintf(__("(with %s or %s)", 'CAS_Maestro'), 'ldap://', 'ldaps://'); ?></span></th>
               <td><input type="text" <?php check_empty($this->settings['ldap_server'])?>  name="ldap_server" id="ldap_server" value="<?php echo $this->settings['ldap_server']; ?>" size="35" /></td>
             </tr>
             <tr valign="center">
               <th width="150px" scope="row"> <?php _e("Username <abbr title='(Relative Distinguished Name)'>RDN</abbr>", 'CAS_Maestro');?></th>
               <td><input type="text" name="ldap_username_rdn" id="ldap_user" value="<?php echo $this->settings['ldap_username_rdn']; ?>" size="35" /></td>
             </tr>
-            <tr valign="center"> 
+            <tr valign="center">
               <th width="150px" scope="row"><?php _e("Password", 'CAS_Maestro'); ?></th>
               <td><input type="text" name="ldap_password" id="ldap_pass" value="<?php echo $this->settings['ldap_password']; ?>" size="35" /></td>
             </tr>
@@ -68,7 +68,7 @@ foreach($raw_roles as $role => $value) {
   </div>
   <div style="clear:both"></div>
 
-  <h2><?php _e("Users Allowed to Register", 'CAS_Maestro'); ?></h2> 
+  <h2><?php _e("Users Allowed to Register", 'CAS_Maestro'); ?></h2>
   <p><?php _e("If you indentify users with the ability to register on the system upfront without confirmation you can also set their names and profile.", 'CAS_Maestro'); ?></p>
   <div>
      <table id="autoAdd">
@@ -103,7 +103,7 @@ foreach($raw_roles as $role => $value) {
             <td class="prefix"><input class="istid" type="text" id="txt<?php echo $i?>" name="username[<?php echo $i?>]" style="width: 150px;"></input></td>
             <td>
               <select class="to_select_2" name="role[<?php echo $i?>]" style="width: 180px;">
-             <?php   
+             <?php
              $select_options="<option></option>";
              foreach($raw_roles as $role => $value) {
               $roles[] = $role;
@@ -113,7 +113,7 @@ foreach($raw_roles as $role => $value) {
               } ?>
 
               <?php echo $select_options?>
-              </select>       
+              </select>
             </td>
           </tr>
         </tbody>

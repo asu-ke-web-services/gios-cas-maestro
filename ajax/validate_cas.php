@@ -9,11 +9,11 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 	$directory = $_POST['d'];
 	$lib = __DIR__.'/../phpCAS/CAS.php';
 
-	if($fp = @fsockopen($server,$port,$errCode,$errStr,'4')){   
+	if($fp = @fsockopen($server,$port,$errCode,$errStr,'4')){
 	  echo json_encode(1);
 	} else {
 	  echo json_encode(0);
-	} 
+	}
 	@fclose($fp);
 } else {
 	echo 'Ajax only.';

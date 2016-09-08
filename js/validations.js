@@ -5,7 +5,7 @@ var characters_error = 'Minimum amount of chars is 3';
 var checking_html = casmaestro.checking_html;
 
 jQuery(document).ready(function() {
-		//the min chars for username	
+		//the min chars for username
 
 		// CAS init
 		last_cas_server_data = {
@@ -17,10 +17,10 @@ jQuery(document).ready(function() {
 
 		// LDAP init
 		last_ldap_server_data = {
-			s: jQuery('#ldap_server').val(), 
-			v: jQuery('#ldap_proto').val(), 
-			u: jQuery('#ldap_user').val(), 
-			pw: jQuery('#ldap_pass').val(), 
+			s: jQuery('#ldap_server').val(),
+			v: jQuery('#ldap_proto').val(),
+			u: jQuery('#ldap_user').val(),
+			pw: jQuery('#ldap_pass').val(),
 			bdn: jQuery('#ldap_bdn').val()
 		}
 
@@ -29,7 +29,7 @@ jQuery(document).ready(function() {
 		//when button is clicked
 		jQuery('#server_hostname_inp, #server_port_inp').focusout(function() {
 			//run the character number check
-			
+
 			//else show the cheking_text and run the function to check
 			aux_last_cas_server_data.s = jQuery('#server_hostname_inp').val();
 			aux_last_cas_server_data.p = jQuery('#server_port_inp').val();
@@ -39,7 +39,7 @@ jQuery(document).ready(function() {
 
 		jQuery('#ldap_proto, #ldap_server, #ldap_user, #ldap_pass, #ldap_bdn').focusout(function(){
 			//run the character number check
-			
+
 			//else show the cheking_text and run the function to check
 			aux_last_ldap_server_data.s = jQuery('#ldap_server').val();
 			aux_last_ldap_server_data.v = jQuery('#ldap_proto').val();
@@ -57,7 +57,7 @@ function check_cas(){
 
 	//get the username
 	if ((last_cas_server_data.s == aux_last_cas_server_data.s && last_cas_server_data.p == aux_last_cas_server_data.p) || !aux_last_cas_server_data.s || !aux_last_cas_server_data.p) {
-		if (!aux_last_cas_server_data.s || !aux_last_cas_server_data.p) 
+		if (!aux_last_cas_server_data.s || !aux_last_cas_server_data.p)
 			jQuery('#username_availability_result').html('').removeClass('checking not-responding avaiable');
 		return;
 	}

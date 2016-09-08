@@ -16,7 +16,7 @@ jQuery(document).ready( function($) {
 
     if($('input[name=e-mail_registration]:checked').val() == 3)
         $('#ldap_container').show();
-    
+
 
     $('#welcome_mail_tab').click(function () {
 
