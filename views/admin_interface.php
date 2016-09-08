@@ -1,5 +1,5 @@
 <div class="wrap">
-	    <div id="icon-themes" class="icon32"><br></div>
+        <div id="icon-themes" class="icon32"><br></div>
         <h2><?php echo __('CAS Maestro Settings','CAS_Maestro')?></h2>
         <?php
             if ( isset( $_GET['success'] ) && 'true' == esc_attr( $_GET['success'] )

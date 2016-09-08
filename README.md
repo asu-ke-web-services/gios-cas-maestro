@@ -64,10 +64,10 @@ Yes. But the login URL is slighty different: you must login over `/wp-login.php?
 
 There is a filter `cas_maestro_change_users_capability` that can be used to change the capability. You can add the following to your functions.php:
 
-	function change_casmaestro_capabilities($old) {
-		return 'your_new_capability';
-	}
-	add_filter('cas_maestro_change_users_capability', 'change_casmaestro_capabilities');
+  function change_casmaestro_capabilities($old) {
+    return 'your_new_capability';
+  }
+  add_filter('cas_maestro_change_users_capability', 'change_casmaestro_capabilities');
 
 By default, the capability is `edit_posts`.
 

@@ -1,6 +1,6 @@
 <?php
 /***************************************************************
- ***  CAS Maestro functions file 							 ***
+ ***  CAS Maestro functions file               ***
  ***************************************************************/
 
 /**
@@ -9,7 +9,7 @@
  * @param &$item passed by reference, the array item being tested.
  */
 function removeEmptyItems(&$item) {
-	//Verify is the
+  //Verify is the
     if (is_array($item) && $item) {
         $item = array_filter($item, 'removeEmptyItems');
     }
@@ -22,7 +22,7 @@ function removeEmptyItems(&$item) {
  * and print a class.
  */
 function check_empty($variable) {
-	if(empty($variable) && isset($_GET['error'])) {
-		echo "class='required_field'";
-	}
+  if(empty($variable) && isset($_GET['error'])) {
+    echo "class='required_field'";
+  }
 }
