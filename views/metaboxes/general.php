@@ -29,6 +29,14 @@
           <input type="text" name="server_path" id="server_path_inp" value="<?php echo $this->settings['server_path']; ?>" size="25" />
         </td>
       </tr>
+      <tr>
+        <th width="150px" scope="row"><label for="redirect_url_inp"><?php _e('Redirect URL', 'CAS_Maestro'); ?></label></th>
+        <td>
+          <input type="text" name="redirect_url" id="redirect_url_inp" value="<?php echo $this->settings['redirect_url']; ?>" size="25" />
+          <div class="grey_text">Specify the url to redirect to after logging out.<br />
+          Leave blank to disable redirection.</div></td>
+        </td>
+      </tr>
     </tbody>
   </table>
   <div class='availability_result' id="username_availability_result"></div>

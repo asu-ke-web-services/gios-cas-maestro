@@ -70,6 +70,7 @@ class CAS_Maestro {
           'server_path' => '',
           'phpcas_path' => 'phpCAS/',
           'debug_path' => '',
+          'redirect_url' => get_option('siteurl'),
           'e-mail_registration' => 1,
           'global_sender'=>get_bloginfo('admin_email'),
           'full_name' => '',
@@ -380,11 +381,16 @@ class CAS_Maestro {
     $not_using_cas =isset($_SESSION['not_using_CAS']) && $_SESSION['not_using_CAS'] == true;
     session_destroy();
 
-    if( $not_using_cas )
+    if( $not_using_cas ) {
       wp_redirect(home_url());
-    else
-        phpCAS::logoutWithRedirectService(get_option('siteurl'));
-      exit();
+    }
+    elseif( $this->settings['redirect_url'] ) {
+      phpCAS::logoutWithRedirectService($this->settings['redirect_url']);
+    }
+    else {
+      phpCAS::logout();
+    }
+    exit();
   }
 
   /**
@@ -593,6 +599,7 @@ class CAS_Maestro {
         'server_port' => $_POST['server_port'],
         'server_path' => $_POST['server_path'],
         'debug_path' => $_POST['debug_path'],
+        'redirect_url' => $_POST['redirect_url'],
         //LDAP Settings
           'ldap_protocol'=>$_POST['ldap_protocol'],
           'ldap_server'=>$_POST['ldap_server'],
