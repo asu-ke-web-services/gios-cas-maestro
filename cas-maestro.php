@@ -69,6 +69,7 @@ class CAS_Maestro {
           'server_port' => '443',
           'server_path' => '',
           'phpcas_path' => 'phpCAS/',
+          'debug_path' => '',
           'e-mail_registration' => 1,
           'global_sender'=>get_bloginfo('admin_email'),
           'full_name' => '',
@@ -150,8 +151,9 @@ class CAS_Maestro {
         unset($phpCas);
         // if you want to set a cert, replace the above few lines
 
-        if(defined('CAS_MAESTRO_DEBUG_ON') && CAS_MAESTRO_DEBUG_ON == true)
-          phpCAS::setDebug(CAS_MAESTRO_PLUGIN_PATH . 'debug.log');
+        if ($this->settings['debug_path']) {
+          phpCAS::setDebug($this->settings['debug_path']);
+        }
 
         /**
          * Filters and actions registration
@@ -590,6 +592,7 @@ class CAS_Maestro {
         'server_hostname' => $_POST['server_hostname'],
         'server_port' => $_POST['server_port'],
         'server_path' => $_POST['server_path'],
+        'debug_path' => $_POST['debug_path'],
         //LDAP Settings
           'ldap_protocol'=>$_POST['ldap_protocol'],
           'ldap_server'=>$_POST['ldap_server'],
