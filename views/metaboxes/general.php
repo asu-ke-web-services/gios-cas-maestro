@@ -41,6 +41,26 @@
   </table>
   <div class='availability_result' id="username_availability_result"></div>
 
+  <h2><?php _e('Advanced options', 'CAS_Maestro'); ?></h2>
+  <table width="700px" cellspacing="2" cellpadding="5" class="editform">
+    <tbody>
+      <tr>
+        <th width="150px" scope="row"><label for="phpcas_path_inp"><?php _e('Path to phpCAS', 'CAS_Maestro'); ?></label></th>
+        <td><input type="text" name="phpcas_path" id="phpcas_path_inp" value="<?php echo $this->settings['phpcas_path']; ?>" size="25" />
+        <div class="grey_text">Specify the path to the phpCAS library.<br />
+          Use "phpCAS/" for the version of the library shipped with the module.<br />
+          Leave blank to load phpCAS from your PHP include path.</div></td>
+      </tr>
+      <tr>
+        <th width="150px" scope="row"><label for="debug_path_inp"><?php _e('Path to log file', 'CAS_Maestro'); ?></label></th>
+        <td><input type="text" name="debug_path" id="debug_path_inp" value="<?php echo $this->settings['debug_path']; ?>" size="25" />
+        <div class="grey_text">A file system path and filename where the CAS debug log will be written.<br />
+          Leave blank to disable logging.<br />
+          Debugging should not be enabled on production systems.</div></td>
+      </tr>
+    </tbody>
+  </table>
+
   <h2><?php _e('Menu localization', 'CAS_Maestro'); ?></h2>
   <p>
     <label for="admin_menu_side" class="label-radio">
