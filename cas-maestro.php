@@ -74,6 +74,10 @@ class CAS_Maestro {
           'e-mail_registration' => 1,
           'global_sender'=>get_bloginfo('admin_email'),
           'full_name' => '',
+          //CAS attributes
+          'cas_first_name' => '',
+          'cas_last_name' => '',
+          'cas_user_email' => '',
           //Welcome email
           'welcome_mail' => array(
               'send_user'=>true,
@@ -90,6 +94,7 @@ class CAS_Maestro {
               'user_body'=>'',
               'global_body' => '',
             ),
+          //LDAP Settings
           'ldap_protocol'=>'',
           'ldap_server'=>'',
           'ldap_username_rdn'=>'',
@@ -293,6 +298,22 @@ class CAS_Maestro {
             }
           }
           break;
+        case 4: //Using CAS attributes
+          $cas_attributes = phpCAS::getAttributes();
+          if (isset($cas_attributes['first_name'])) {
+            $firstname = $cas_attributes['first_name'];
+          }
+          if (isset($cas_attributes['last_name'])) {
+            $lastname = $cas_attributes['last_name'];
+          }
+          if (isset($cas_attributes['mail'])) {
+            $user_email = $cas_attributes['mail'];
+          }
+          break;
+          $cas_attributes = phpCAS::getAttributes();
+          if (isset($cas_attributes['mail'])) {
+            $user_email = $cas_attributes['mail'];
+          }
         default: //No email predition
           break;
 
@@ -600,6 +621,10 @@ class CAS_Maestro {
         'server_path' => $_POST['server_path'],
         'debug_path' => $_POST['debug_path'],
         'redirect_url' => $_POST['redirect_url'],
+        //CAS Attributes
+        'cas_first_name' => $_POST['cas_first_name'],
+        'cas_last_name' => $_POST['cas_last_name'],
+        'cas_user_email' => $_POST['cas_user_email'],
         //LDAP Settings
           'ldap_protocol'=>$_POST['ldap_protocol'],
           'ldap_server'=>$_POST['ldap_server'],

@@ -98,6 +98,7 @@ margin: 0 8px;
 
 .cas_form th {
   text-align: right;
+  vertical-align: top;
 }
 
 .main_content {
@@ -111,7 +112,8 @@ margin: 0 8px;
   display: inline;
 }
 
-#ldap_container {
+#ldap_container,
+#cas_container {
   display: none;
 }
 

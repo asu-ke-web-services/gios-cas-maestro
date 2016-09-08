@@ -21,15 +21,17 @@ foreach($raw_roles as $role => $value) {
     <div class="main_content">
       <div>
         <p><?php _e("In order to register a new user an email address is required. In case you don’t want to set the email address manually, please chose from the options below.", 'CAS_Maestro'); ?></p>
-        <?php if($this->settings['e-mail_registration'] < 1 || $this->settings['e-mail_registration'] > 3 ) $this->settings['e-mail_registration'] = 1; ?>
+        <?php if($this->settings['e-mail_registration'] < 1 || $this->settings['e-mail_registration'] > 4 ) $this->settings['e-mail_registration'] = 1; ?>
         <input id="no-e-mail" type="radio" name="e-mail_registration" value="1" <?php echo ($this->settings['e-mail_registration'] == '1')?'checked':''; ?>><label for="no-e-mail"><?php _e("No mail creation", 'CAS_Maestro'); ?></label><br />
         <input id="e-mail-suffix" type="radio" name="e-mail_registration" value="2" <?php echo ($this->settings['e-mail_registration'] == '2')?'checked':''; ?>><label for="e-mail-suffix"><?php _e("E-mail suffix username@", 'CAS_Maestro'); ?></label><input type="text" name="email_suffix" id="email_suffix_inp" value="<?php echo $this->settings['email_suffix']; ?>" placeholder="<?php echo parse_url(site_url(),PHP_URL_HOST)?>" size="15" /><br />
-        <input id="ldap-e-mail" type="radio" name="e-mail_registration" value="3" <?php echo ($this->settings['e-mail_registration'] == '3')?'checked':''; ?>><label for="ldap-e-mail"><?php _e("LDAP server connection", 'CAS_Maestro'); ?></label>
+        <input id="ldap-e-mail" type="radio" name="e-mail_registration" value="3" <?php echo ($this->settings['e-mail_registration'] == '3')?'checked':''; ?>><label for="ldap-e-mail"><?php _e("LDAP server connection", 'CAS_Maestro'); ?></label><br />
+        <input id="cas-e-mail" type="radio" name="e-mail_registration" value="4" <?php echo ($this->settings['e-mail_registration'] == '4')?'checked':''; ?>><label for="cas-e-mail"><?php _e("CAS attributes", 'CAS_Maestro'); ?></label>
       </div>
       <div id="ldap_container">
         <p><?php _e("You should finish this configuration with LDAP server data. For anonymous server access, which could not be enough, leave the fields “RDN User” and “Password” blank.", 'CAS_Maestro'); ?></p>
 
         <table width="700px" cellspacing="2" cellpadding="5" class="editform">
+          <tbody>
             <tr valign="center">
               <th width="150px" scope="row">Protocol version</th>
               <td>
@@ -56,8 +58,36 @@ foreach($raw_roles as $role => $value) {
               <th width="150px" scope="row"><?php _e("Base DN", 'CAS_Maestro'); ?>*</th>
               <td><input type="text" <?php check_empty($this->settings['ldap_basedn'])?> name="ldap_basedn" id="ldap_bdn" value="<?php echo $this->settings['ldap_basedn']; ?>" size="35" /></td>
             </tr>
-          </table>
-          <div class='availability_result' id='ldap_availability_result'></div>
+          </tbody>
+        </table>
+        <div class='availability_result' id='ldap_availability_result'></div>
+      </div>
+
+      <div id="cas_container">
+        <h2><?php _e('CAS attributes settings','CAS_Maestro'); ?></h2>
+        <p><?php _e("Define what attributes you want to copy from the CAS server.", 'CAS_Maestro'); ?></p>
+        <table width="700px" cellspacing="2" cellpadding="5" class="editform">
+            <tbody>
+                <tr>
+                    <th width="150px" scope="row"><label for="cas_first_name_inp"><?php _e('First name', 'CAS_Maestro'); ?></label></th>
+                    <td>
+                        <input type="text" name="cas_first_name" id="cas_first_name_inp" value="<?php echo $this->settings['cas_first_name']; ?>" size="25" />
+                    </td>
+                </tr>
+                <tr>
+                    <th width="150px" scope="row"><label for="cas_last_name_inp"><?php _e('Last name', 'CAS_Maestro'); ?></label></th>
+                    <td>
+                        <input type="text" name="cas_last_name" id="cas_last_name_inp" value="<?php echo $this->settings['cas_last_name']; ?>" size="25" />
+                    </td>
+                </tr>
+                <tr>
+                    <th width="150px" scope="row"><label for="cas_user_email_inp"><?php _e('User email', 'CAS_Maestro'); ?></label></th>
+                    <td>
+                        <input type="text" name="cas_user_email" id="cas_user_email_inp" value="<?php echo $this->settings['cas_user_email']; ?>" size="25" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
       </div>
     </div>
 <?php endif; ?>

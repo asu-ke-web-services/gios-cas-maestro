@@ -8,15 +8,27 @@ jQuery(document).ready( function($) {
     $('#ldap_proto').select2();
 
     $('input[name=e-mail_registration]').change(function () {
-        if ($(this).val() == 3)
+        if ($(this).val() == 3) {
             $('#ldap_container').slideDown();
-        else
+            $('#cas_container').slideUp();
+        }
+        else if ($(this).val() == 4) {
+            $('#cas_container').slideDown();
             $('#ldap_container').slideUp();
+        }
+        else {
+            $('#ldap_container').slideUp();
+            $('#cas_container').slideUp();
+        }
     });
 
-    if($('input[name=e-mail_registration]:checked').val() == 3)
+    var opt = $('input[name=e-mail_registration]:checked').val();
+    if(opt == 3) {
         $('#ldap_container').show();
-
+    }
+    else if(opt == 4) {
+        $('#cas_container').show();
+    }
 
     $('#welcome_mail_tab').click(function () {
 
