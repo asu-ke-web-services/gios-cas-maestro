@@ -40,7 +40,6 @@ class CAS_Maestro {
 
   public $settings;
   public $network_settings;
-  public $phpcas_path;
   public $allowed_users;
 
   public $cas_configured = true;
@@ -69,6 +68,7 @@ class CAS_Maestro {
           'server_hostname' => 'yourschool.edu',
           'server_port' => '443',
           'server_path' => '',
+          'phpcas_path' => 'phpCAS/',
           'e-mail_registration' => 1,
           'global_sender'=>get_bloginfo('admin_email'),
           'full_name' => '',
@@ -99,7 +99,6 @@ class CAS_Maestro {
 
     //Get blog settings. If they doesn't exist, get the network settings.
     $this->settings = get_option('wpCAS_settings',$this->network_settings);
-    $this->phpcas_path = get_option('wpCAS_phpCAS_path',CAS_MAESTRO_PLUGIN_PATH.'phpCAS/CAS.php');
     $this->allowed_users = get_option('wpCAS_allowed_users',array());
     $this->change_users_capability = 'edit_posts';
 
@@ -122,8 +121,14 @@ class CAS_Maestro {
     if($run_cas) {
       /**
        * phpCAS initialization
+       *
+       * if setting hasn't been initalized (because original cas maestro plugin
+       * had been installed, then set default value here
        */
-      include_once($this->phpcas_path);
+      if (empty($this->settings['phpcas_path'])) {
+        $this->settings['phpcas_path'] = 'phpCAS/';
+      }
+      include_once($this->settings['phpcas_path'] . 'CAS.php');
 
       if ($this->settings['server_hostname'] == '' ||
           intval($this->settings['server_port']) == 0)
@@ -581,6 +586,7 @@ class CAS_Maestro {
       $optionarray_update = array (
         //CAS Settings
         'cas_version' => $_POST['cas_version'],
+        'phpcas_path' => $_POST['phpcas_path'],
         'server_hostname' => $_POST['server_hostname'],
         'server_port' => $_POST['server_port'],
         'server_path' => $_POST['server_path'],
