@@ -26,6 +26,7 @@ foreach($raw_roles as $role => $value) {
         <input id="e-mail-suffix" type="radio" name="e-mail_registration" value="2" <?php echo ($this->settings['e-mail_registration'] == '2')?'checked':''; ?>><label for="e-mail-suffix"><?php _e("E-mail suffix username@", 'CAS_Maestro'); ?></label><input type="text" name="email_suffix" id="email_suffix_inp" value="<?php echo $this->settings['email_suffix']; ?>" placeholder="<?php echo parse_url(site_url(),PHP_URL_HOST)?>" size="15" /><br />
         <input id="ldap-e-mail" type="radio" name="e-mail_registration" value="3" <?php echo ($this->settings['e-mail_registration'] == '3')?'checked':''; ?>><label for="ldap-e-mail"><?php _e("LDAP server connection", 'CAS_Maestro'); ?></label><br />
         <input id="cas-e-mail" type="radio" name="e-mail_registration" value="4" <?php echo ($this->settings['e-mail_registration'] == '4')?'checked':''; ?>><label for="cas-e-mail"><?php _e("CAS attributes", 'CAS_Maestro'); ?></label>
+        <input id="asu-directory" type="radio" name="e-mail_registration" value="5" <?php echo ($this->settings['e-mail_registration'] == '5')?'checked':''; ?>><label for="asu-directory"><?php _e("ASU Directory", 'CAS_Maestro'); ?></label>
       </div>
       <div id="ldap_container">
         <p><?php _e("You should finish this configuration with LDAP server data. For anonymous server access, which could not be enough, leave the fields “RDN User” and “Password” blank.", 'CAS_Maestro'); ?></p>

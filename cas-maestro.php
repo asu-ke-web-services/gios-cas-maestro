@@ -28,10 +28,17 @@ define('WPCAS_WAITACCESS_MAIL',1);
 
 /*
 |--------------------------------------------------------------------------
+| Load ASU Directory utility class
+|--------------------------------------------------------------------------
+*/
+require_once 'vendors/asurite/asu_directory.php';
+require_once '/var/www/html/kint/Kint.class.php';
+
+/*
+|--------------------------------------------------------------------------
 | MAIN CLASS
 |--------------------------------------------------------------------------
 */
-
 class CAS_Maestro {
 
   /*--------------------------------------------*
@@ -240,32 +247,35 @@ class CAS_Maestro {
     phpCAS::forceAuthentication();
 
     // might as well be paranoid
-        if (!phpCAS::isAuthenticated())
+    if (!phpCAS::isAuthenticated()) {
       exit();
+    }
 
     $username = phpCAS::getUser();
-      $password = md5($username.'wpCASAuth!"#$"!$!"%$#"%#$'.rand().$this->generateRandomString(20));
+    $password = md5($username.'wpCASAuth!"#$"!$!"%$#"%#$'.rand().$this->generateRandomString(20));
 
-
-    $user = get_user_by('login',$username);
-    if($user) {
-      if(is_multisite()) {
-        if($this->canUserRegister($username) &&
-          !is_user_member_of_blog( $user->ID, get_current_blog_id() )) {
+    $user = get_user_by('login', $username);
+    if ($user) {
+      if (is_multisite()) {
+        if ($this->canUserRegister($username) && !is_user_member_of_blog( $user->ID, get_current_blog_id() )) {
             $nextrole = $this->canUserRegister($username);
             add_user_to_blog(get_current_blog_id(), $user->ID, $nextrole);
         }
       }
-        return $user;
-      }
+      return $user;
+    }
 
-      /** Register a new user, if it is allowed */
-      if ($user_role = $this->canUserRegister($username)) {
+    /** Register a new user, if it is allowed */
+    if ($user_role = $this->canUserRegister($username)) {
+
+      $cas_attributes = phpCAS::getAttributes();
+
       $user_email = '';
       $email_registration = $this->settings['e-mail_registration'];
-      //How does the site is configured to get the email?
+
+      //How is the site configured to determine user's email address?
       switch($email_registration) {
-        case 2: //Using sufix
+        case 2: //Using suffix
           $user_email = $username . '@' . $this->settings['email_suffix'];
           break;
 
@@ -310,10 +320,20 @@ class CAS_Maestro {
             $user_email = $cas_attributes['mail'];
           }
           break;
-          $cas_attributes = phpCAS::getAttributes();
-          if (isset($cas_attributes['mail'])) {
-            $user_email = $cas_attributes['mail'];
+
+        case 5: //Using ASURITE Directory attributes
+          $directory_info = AsuDirectory::get_directory_info_by_asurite($username);
+          if (!empty(AsuDirectory::get_email_from_directory_info($directory_info))) {
+            $user_email = AsuDirectory::get_email_from_directory_info($directory_info);
           }
+          if (!empty(AsuDirectory::get_first_name_from_directory_info($directory_info))) {
+            $firstname = AsuDirectory::get_first_name_from_directory_info($directory_info);
+          }
+          if (!empty(AsuDirectory::get_last_name_from_directory_info($directory_info))) {
+            $lastname = AsuDirectory::get_last_name_from_directory_info($directory_info);
+          }
+          break;
+
         default: //No email predition
           break;
 
