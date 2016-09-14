@@ -346,8 +346,9 @@ class CAS_Maestro {
       $user_info['first_name'] = $firstname;
       $user_info['last_name'] = $lastname;
       //Verify if we need to add user to a specified role
-      if(!is_bool($user_role))
+      if(!is_bool($user_role)) {
         $user_info['role'] = $user_role;
+      }
 
       if ( !is_wp_error(wp_insert_user($user_info)) ) {
         $send_user = !empty($user_info['user_email']); //False, if user has no email
