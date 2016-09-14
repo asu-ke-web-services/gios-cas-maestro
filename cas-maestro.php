@@ -453,6 +453,8 @@ class CAS_Maestro {
 
     /**
      * Disable a function. To be hooked to a action
+     *
+     * TODO: we need to be able to bypass this when a user is not CAS-authenticated (regular Wordpress users need to be able to perform these actions)
      */
     function disable_function() {
       die('Disabled');
