@@ -361,8 +361,9 @@ class CAS_Maestro {
         }
 
         $user = get_user_by('login',$username);
-        if(!isset($user_info['user_role']))
+        if(!isset($user_info['user_role'])) {
           update_user_meta($user->ID,'_wpcas_waiting',true);
+        }
         return $user;
       }
 
