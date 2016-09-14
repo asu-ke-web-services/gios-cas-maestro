@@ -253,9 +253,12 @@ class CAS_Maestro {
     $username = phpCAS::getUser();
     $password = md5($username.'wpCASAuth!"#$"!$!"%$#"%#$'.rand().$this->generateRandomString(20));
 
+    // lookup user in WordPress
     $user = get_user_by('login', $username);
     if ($user) {
+      // we found user, so check if this a multisite install
       if (is_multisite()) {
+        // this is multisite, so see if user is member of blog and is allowed to register
         if ($this->canUserRegister($username) && !is_user_member_of_blog( $user->ID, get_current_blog_id() )) {
             $nextrole = $this->canUserRegister($username);
             add_user_to_blog(get_current_blog_id(), $user->ID, $nextrole);
