@@ -266,9 +266,6 @@ class CAS_Maestro {
 
     /** Register a new user, if it is allowed */
     if ($user_role = $this->canUserRegister($username)) {
-
-      $cas_attributes = phpCAS::getAttributes();
-
       $user_email = '';
       $email_registration = $this->settings['e-mail_registration'];
 
