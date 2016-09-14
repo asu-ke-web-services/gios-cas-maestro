@@ -360,10 +360,10 @@ class CAS_Maestro {
           $this->processMailing(WPCAS_WELCOME_MAIL,$user_info,$send_user);
         }
 
-            $user = get_user_by('login',$username);
-            if(!isset($user_info['user_role']))
-              update_user_meta($user->ID,'_wpcas_waiting',true);
-            return $user;
+        $user = get_user_by('login',$username);
+        if(!isset($user_info['user_role']))
+          update_user_meta($user->ID,'_wpcas_waiting',true);
+        return $user;
       }
 
     } else {
