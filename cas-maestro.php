@@ -234,8 +234,7 @@ class CAS_Maestro {
   function validate_login($null, $username, $password) {
 
     if (!$this->cas_configured) {
-      die('Error. Cas not configured and I was unable to redirect you to wp-login. Use define("WPCAS_BYPASS",true); in your wp-config.php
-          to bypass wpCAS');
+      die('Error. Cas not configured and I was unable to redirect you to wp-login. Use define("WPCAS_BYPASS",true); in your wp-config.php to bypass wpCAS');
     }
 
     phpCAS::forceAuthentication();
@@ -269,6 +268,7 @@ class CAS_Maestro {
         case 2: //Using sufix
           $user_email = $username . '@' . $this->settings['email_suffix'];
           break;
+
         case 3: //Using LDAP
           /*fetch user email from ldap*/
           $ds=ldap_connect($this->settings['ldap_server']);
@@ -297,6 +297,7 @@ class CAS_Maestro {
             }
           }
           break;
+
         case 4: //Using CAS attributes
           $cas_attributes = phpCAS::getAttributes();
           if (isset($cas_attributes['first_name'])) {
