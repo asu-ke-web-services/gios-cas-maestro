@@ -14,7 +14,6 @@ Text Domain: CAS_Maestro
 | CONSTANTS
 |--------------------------------------------------------------------------
 */
-
 // plugin folder url
 if(!defined('CAS_MAESTRO_PLUGIN_URL'))
   define('CAS_MAESTRO_PLUGIN_URL', plugin_dir_url( __FILE__ ));
@@ -57,6 +56,7 @@ class CAS_Maestro {
   public $bypass_cas = false;
 
   public $change_users_capability;
+
   /*--------------------------------------------*
    * Constructor
    *--------------------------------------------*/
@@ -239,7 +239,6 @@ class CAS_Maestro {
    * Validate the login using CAS
    */
   function validate_login($null, $username, $password) {
-
     if (!$this->cas_configured) {
       die('Error. Cas not configured and I was unable to redirect you to wp-login. Use define("WPCAS_BYPASS",true); in your wp-config.php to bypass wpCAS');
     }
@@ -338,7 +337,6 @@ class CAS_Maestro {
           break;
 
       }
-
 
       $user_info = array();
       $user_info['user_pass'] = $password;
