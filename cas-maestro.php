@@ -61,7 +61,7 @@ class CAS_Maestro {
 
     //Initialize the settings
     $default_settings = array(
-        'cas_menu_location'=>'sidebar',
+        'cas_menu_location'=>'settings',
         'new_user' => false,
           'email_suffix' => '',
           'cas_version' => "1.0",
