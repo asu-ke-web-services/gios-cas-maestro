@@ -260,8 +260,10 @@ class CAS_Maestro {
       if (is_multisite()) {
         // this is multisite, so see if user is member of blog and is allowed to register
         if ($this->canUserRegister($username) && !is_user_member_of_blog( $user->ID, get_current_blog_id() )) {
+            do_action('casmaestro_before_register_user');
             $nextrole = $this->canUserRegister($username);
             add_user_to_blog(get_current_blog_id(), $user->ID, $nextrole);
+            do_action('casmaestro_after_register_user');
         }
       }
       return $user;
@@ -350,6 +352,8 @@ class CAS_Maestro {
         $user_info['role'] = $user_role;
       }
 
+      do_action('casmaestro_before_register_user');
+
       if ( !is_wp_error(wp_insert_user($user_info)) ) {
         $send_user = !empty($user_info['user_email']); //False, if user has no email
         if(!isset($user_info['role']) && $this->settings['wait_mail']['send_user']) {
@@ -367,6 +371,7 @@ class CAS_Maestro {
         if(!isset($user_info['user_role'])) {
           update_user_meta($user->ID,'_wpcas_waiting',true);
         }
+        do_action('casmaestro_after_register_user');
         return $user;
       }
 
