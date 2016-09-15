@@ -21,7 +21,7 @@ foreach($raw_roles as $role => $value) {
     <div class="main_content">
       <div>
         <p><?php _e("In order to register a new user an email address is required. In case you don’t want to set the email address manually, please chose from the options below.", 'CAS_Maestro'); ?></p>
-        <?php if($this->settings['e-mail_registration'] < 1 || $this->settings['e-mail_registration'] > 4 ) $this->settings['e-mail_registration'] = 1; ?>
+        <?php if($this->settings['e-mail_registration'] < 1 || $this->settings['e-mail_registration'] > 5 ) $this->settings['e-mail_registration'] = 1; ?>
         <input id="no-e-mail" type="radio" name="e-mail_registration" value="1" <?php echo ($this->settings['e-mail_registration'] == '1')?'checked':''; ?>><label for="no-e-mail"><?php _e("No mail creation", 'CAS_Maestro'); ?></label><br />
         <input id="e-mail-suffix" type="radio" name="e-mail_registration" value="2" <?php echo ($this->settings['e-mail_registration'] == '2')?'checked':''; ?>><label for="e-mail-suffix"><?php _e("E-mail suffix username@", 'CAS_Maestro'); ?></label><input type="text" name="email_suffix" id="email_suffix_inp" value="<?php echo $this->settings['email_suffix']; ?>" placeholder="<?php echo parse_url(site_url(),PHP_URL_HOST)?>" size="15" /><br />
         <input id="ldap-e-mail" type="radio" name="e-mail_registration" value="3" <?php echo ($this->settings['e-mail_registration'] == '3')?'checked':''; ?>><label for="ldap-e-mail"><?php _e("LDAP server connection", 'CAS_Maestro'); ?></label><br />
