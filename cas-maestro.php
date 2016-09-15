@@ -516,7 +516,10 @@ class CAS_Maestro {
               214
       );
     }
-    add_action( "load-{$settings_page}", array(&$this, 'onLoad_settings_page') );
+    // let's not try to add action if no settings page is available
+    if ( !empty( $settings_page ) ) {
+      add_action( "load-{$settings_page}", array(&$this, 'onLoad_settings_page') );
+    }
   }
 
   function add_meta_boxes() {
