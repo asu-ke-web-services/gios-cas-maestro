@@ -503,15 +503,15 @@ class CAS_Maestro {
             array(&$this,'admin_interface'));
           break;
       }
-    } else if( !current_user_can( 'manage_options' )
-      && current_user_can( $this->change_users_capability ) ) {
+    } elseif( !current_user_can( 'manage_options' ) && current_user_can( $this->change_users_capability ) ) {
       $settings_page = add_menu_page(__('CAS Maestro Settings', "CAS_Maestro"),
               __('CAS Maestro', "CAS_Maestro"),
               $this->change_users_capability,
               'wpcas_settings',
               array(&$this,'admin_interface'),
               '',
-              214);
+              214
+      );
     }
     add_action( "load-{$settings_page}", array(&$this, 'onLoad_settings_page') );
   }
