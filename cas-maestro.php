@@ -252,6 +252,9 @@ class CAS_Maestro {
 
     $username = phpCAS::getUser();
     $password = md5($username.'wpCASAuth!"#$"!$!"%$#"%#$'.rand().$this->generateRandomString(20));
+    $user_realname = '';
+    $firstname = '';
+    $lastname = '';
 
     // lookup user in WordPress
     $user = get_user_by('login', $username);
