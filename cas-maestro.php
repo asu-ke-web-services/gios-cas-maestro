@@ -277,7 +277,7 @@ class CAS_Maestro {
       $user_email = '';
       $email_registration = $this->settings['e-mail_registration'];
 
-      //How is the site configured to determine user's email address?
+      // Is the site configured to acquire and use the user's email address?
       switch($email_registration) {
         case 2: //Using suffix
           $user_email = $username . '@' . $this->settings['email_suffix'];
