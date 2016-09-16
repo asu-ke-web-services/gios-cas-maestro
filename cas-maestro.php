@@ -400,6 +400,7 @@ class CAS_Maestro {
     $user_data['user_login']=$user->user_login;
     $user_data['user_email']=$user->user_email;
     $user_data['display_name']=$user->display_name;
+
     if($old_user_data->user_email=='' && $user->user_email!='') {
       if(!isset($this->allowed_users[$user->user_login]) && $this->settings['wait_mail']['send_user']) {
         //If user is waiting for access (not in the allowed list) and is allowed to send wait mail to user
@@ -409,7 +410,6 @@ class CAS_Maestro {
       }
     }
 
-
     //Verify if there was a role change
     $waiting = get_user_meta($user_id,'_wpcas_waiting',true);
     if(!empty($waiting) && !in_array('subscriber',$user->roles)
@@ -418,7 +418,6 @@ class CAS_Maestro {
       //user permissions have been given, notify the user
       $this->processMailing(WPCAS_WELCOME_MAIL, $user_data, true, false);
     }
-
   }
 
   function bypass_cas_login_form($url, $path, $orig_scheme) {
@@ -454,8 +453,8 @@ class CAS_Maestro {
      * to wp-admin.
      */
     function bypass_reauth($login_url) {
-        $login_url = remove_query_arg('reauth', $login_url);
-        return $login_url;
+      $login_url = remove_query_arg('reauth', $login_url);
+      return $login_url;
     }
 
     /**
