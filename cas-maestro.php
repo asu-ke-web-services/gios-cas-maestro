@@ -359,7 +359,6 @@ class CAS_Maestro {
       $user_info['display_name'] = $user_realname;
       $user_info['first_name'] = $firstname;
       $user_info['last_name'] = $lastname;
-      $user_info['nickname'] = $username;
 
       // Verify if we need to add user to a specified role
       // user_role will be TRUE, if registrations are globally allowed
