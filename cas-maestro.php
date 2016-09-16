@@ -323,6 +323,7 @@ class CAS_Maestro {
           if (isset($cas_attributes['mail'])) {
             $user_email = $cas_attributes['mail'];
           }
+          $user_realname = $firstname . ' ' . $lastname;
           break;
 
         case 5: //Using ASURITE Directory attributes
@@ -336,6 +337,7 @@ class CAS_Maestro {
           if (!empty(AsuDirectory::get_last_name_from_directory_info($directory_info))) {
             $lastname = AsuDirectory::get_last_name_from_directory_info($directory_info);
           }
+          $user_realname = $firstname . ' ' . $lastname;
           break;
 
         default: //No email predition
