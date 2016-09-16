@@ -6,7 +6,7 @@
       echo '<div class="updated" ><p>'.__('CAS Maestro settings has been updated.', 'CAS_Maestro').'</p></div>';
     }
     if(isset($_GET['error'])) {
-      echo '<div class="error"><p>'.__('CAS Maestro settings has been updated, yet there\'s still information that needs to be filled.','CAS_Maestro').'</p></div>';
+      echo '<div class="error"><p>'.__('CAS Maestro settings has been updated, but there\'s still information that needs to be completed.','CAS_Maestro').'</p></div>';
     }
   ?>
   <form method="post" class="cas_form">
