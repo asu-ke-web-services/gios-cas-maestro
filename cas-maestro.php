@@ -237,12 +237,12 @@ class CAS_Maestro {
   }
 
   /**
-   * Validate the login using CAS
+   * Authenticate the user using CAS
    */
   function validate_login($null, $username, $password) {
     $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     if (!$this->cas_configured) {
-      die('Error. Cas not configured and I was unable to redirect you to wp-login. Use define("WPCAS_BYPASS",true); in your wp-config.php to bypass wpCAS');
+      die('Error. CAS not configured and I was unable to redirect you to wp-login. Use define("WPCAS_BYPASS",true); in your wp-config.php to bypass wpCAS');
     }
 
     phpCAS::forceAuthentication();
@@ -361,7 +361,9 @@ class CAS_Maestro {
       $user_info['last_name'] = $lastname;
       $user_info['nickname'] = $username;
 
-      //Verify if we need to add user to a specified role
+      // Verify if we need to add user to a specified role
+      // user_role will be TRUE, if registrations are globally allowed
+      // otherwise, it will contain the WP role assigned for this specific user
       if(!is_bool($user_role)) {
         $user_info['role'] = $user_role;
       }
@@ -481,11 +483,12 @@ class CAS_Maestro {
     }
 
     /**
-     * Disable a function. To be hooked to a action
+     * Disable a function. To be hooked to an action
      *
      * TODO: we need to be able to bypass this when a user is not CAS-authenticated (regular Wordpress users need to be able to perform these actions)
      */
     function disable_function() {
+      // only disable this action if the user was authenticated via CAS
       die('Disabled');
     }
 
@@ -758,8 +761,12 @@ class CAS_Maestro {
    *----------------------------------------------*/
 
   /**
-   * canUserRegister return the role if username is in the list of allowed usernames,
-   *   or true if the global registration is enabled, false otherwise.
+   * Return WordPress role if username is in the list of allowed usernames, or
+   * return TRUE if user registration is globally enabled, or
+   * return FALSE otherwise
+   *
+   * @param  [type] $username [description]
+   * @return [type]           [description]
    */
   function canUserRegister($username) {
     if(isset($this->allowed_users[$username]))
