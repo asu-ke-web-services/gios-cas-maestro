@@ -352,6 +352,8 @@ class CAS_Maestro {
       $user_info['display_name'] = $user_realname;
       $user_info['first_name'] = $firstname;
       $user_info['last_name'] = $lastname;
+      $user_info['nickname'] = $username;
+
       //Verify if we need to add user to a specified role
       if(!is_bool($user_role)) {
         $user_info['role'] = $user_role;
