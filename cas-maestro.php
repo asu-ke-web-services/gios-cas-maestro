@@ -78,7 +78,7 @@ class CAS_Maestro {
           'phpcas_path' => 'phpCAS/',
           'debug_path' => '',
           'redirect_url' => get_option('siteurl'),
-          'e-mail_registration' => 1,
+          'email_registration' => 1,
           'global_sender'=>get_bloginfo('admin_email'),
           'full_name' => '',
           //CAS attributes
@@ -275,7 +275,7 @@ class CAS_Maestro {
     /** Register a new user, if it is allowed */
     if ($user_role = $this->canUserRegister($username)) {
       $user_email = '';
-      $email_registration = $this->settings['e-mail_registration'];
+      $email_registration = $this->settings['email_registration'];
 
       // Is the site configured to acquire and use the user's email address?
       switch($email_registration) {
@@ -666,7 +666,7 @@ class CAS_Maestro {
           'ldap_username_rdn'=>$_POST['ldap_username_rdn'],
           'ldap_password'=>$_POST['ldap_password'],
           'ldap_basedn'=>$_POST['ldap_basedn'],
-          'e-mail_registration' => $_POST['e-mail_registration'],
+          'email_registration' => $_POST['email_registration'],
           'full_name' => $_POST['full_name'],
           //Mailing Settings
         'global_sender' => $_POST['global_sender'],
@@ -695,7 +695,7 @@ class CAS_Maestro {
         'server_hostname',
         'server_port'
         );
-      if($optionarray_update['e-mail_registration'] == 3) {
+      if($optionarray_update['email_registration'] == 3) {
         //If LDAP is selected
         $new_mandatory = array(
           'ldap_server',
