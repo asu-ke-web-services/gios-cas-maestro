@@ -116,13 +116,12 @@ class CAS_Maestro {
     $this->allowed_users = get_option('wpCAS_allowed_users',array());
     $this->change_users_capability = 'edit_posts';
 
-    if(!isset($_SESSION))
+    if ( !isset( $_SESSION ) ) {
       session_start();
+    }
 
-    $this->bypass_cas = defined('WPCAS_BYPASS') || isset($_GET['wp']) || isset($_GET['checkemail']) ||
-      (isset($_SESSION['not_using_CAS']) && $_SESSION['not_using_CAS'] == true);
-
-    $this->init(!$this->bypass_cas);
+    $this->bypass_cas = defined('WPCAS_BYPASS') || isset($_GET['wp']) || isset($_GET['checkemail']) || ( isset( $_SESSION['not_using_CAS'] ) && $_SESSION['not_using_CAS'] == true );
+    $this->init( !$this->bypass_cas );
 
   }
 
@@ -363,10 +362,10 @@ class CAS_Maestro {
 
       if ( !is_wp_error(wp_insert_user($user_info)) ) {
         $send_user = !empty($user_info['user_email']); //False, if user has no email
-        if(!isset($user_info['role']) && $this->settings['wait_mail']['send_user']) {
+        if( !isset( $user_info['role'] ) && $this->settings['wait_mail']['send_user'] ) {
           //If user has no role and is allowed to send wait mail to user
           $this->processMailing(WPCAS_WAITACCESS_MAIL,$user_info,$send_user);
-        } else if(!isset($user_info['role']) && !$this->settings['wait_mail']['send_user']) {
+        } elseif ( !isset( $user_info['role'] ) && !$this->settings['wait_mail']['send_user'] ) {
           //Otherwise, if has no role and we don't want a wait for access mail, send the welcome mail
           $this->processMailing(WPCAS_WELCOME_MAIL,$user_info,$send_user);
         } else {
@@ -395,7 +394,7 @@ class CAS_Maestro {
    * onSaveProfile
    *  Hook to verify if user email was correctly filled, and send a welcome email when that is done.
    */
-  function onSaveProfile($user_id, $old_user_data) {
+  function onSaveProfile( $user_id, $old_user_data ) {
     $user = get_user_by('id',$user_id);
     $user_data['user_login']=$user->user_login;
     $user_data['user_email']=$user->user_email;
@@ -420,12 +419,11 @@ class CAS_Maestro {
     }
   }
 
-  function bypass_cas_login_form($url, $path, $orig_scheme) {
-    if($this->bypass_cas) {
-      if( $path=='wp-login.php' ||
-        $path=='wp-login.php?action=register' ||
-        $path == 'wp-login.php?action=lostpassword' )
-        return add_query_arg('wp', '', $url);
+  function bypass_cas_login_form( $url, $path, $orig_scheme ) {
+    if ( $this->bypass_cas ) {
+      if ( $path=='wp-login.php' || $path=='wp-login.php?action=register' || $path == 'wp-login.php?action=lostpassword' || $path == 'wp-login.php?action=resetpass' ) {
+        return add_query_arg( 'wp', '', $url );
+      }
     }
     return $url;
   }
