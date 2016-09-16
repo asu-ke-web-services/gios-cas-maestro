@@ -427,9 +427,8 @@ class CAS_Maestro {
     }
 
     //Verify if there was a role change
-    $waiting = get_user_meta($user_id,'_wpcas_waiting',true);
-    if(!empty($waiting) && !in_array('subscriber',$user->roles)
-      && $this->settings['wait_mail']['send_user']) {
+    $waiting = !empty( get_user_meta( $user_id, '_wpcas_waiting', true ) );
+    if ( $waiting && !in_array( 'subscriber', $user->roles ) && $this->settings['wait_mail']['send_user']) {
       delete_user_meta($user_id,'_wpcas_waiting');
       //user permissions have been given, notify the user
       $this->processMailing(WPCAS_WELCOME_MAIL, $user_data, true, false);
