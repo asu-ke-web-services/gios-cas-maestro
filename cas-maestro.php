@@ -255,9 +255,10 @@ class CAS_Maestro {
 
     $username = phpCAS::getUser();
     $password = md5($username.'wpCASAuth!"#$"!$!"%$#"%#$'.rand().$this->generateRandomString(20));
-    $user_realname = '';
-    $firstname = '';
-    $lastname = '';
+    $this->__default_value($user_email, '');
+    $this->__default_value($user_realname, '');
+    $this->__default_value($firstname, '');
+    $this->__default_value($lastname, '');
 
     // lookup user in WordPress
     $user = get_user_by('login', $username);
@@ -855,6 +856,12 @@ class CAS_Maestro {
       } else {
         error_log( $log . PHP_EOL, 3, "cas_maestro_debug.log" );
       }
+    }
+  }
+
+  private function __default_value(&$var, $default) {
+    if (empty($var)) {
+      $var = $default;
     }
   }
 }
