@@ -65,7 +65,6 @@ class CAS_Maestro {
    * Initializes the plugin by setting localization, filters, and administration functions.
    */
   function __construct() {
-
     //Initialize the settings
     $default_settings = array(
         'cas_menu_location'=>'settings',
@@ -192,6 +191,7 @@ class CAS_Maestro {
 
     add_action('admin_menu', array( &$this,'register_menus'), 50);
     add_action('admin_enqueue_scripts', array(&$this, 'register_javascript'));
+
     //Filter to rewrite the login form action to bypass cas
     if($this->bypass_cas) {
       add_filter('site_url', array(&$this, 'bypass_cas_login_form'), 20, 3);
@@ -365,12 +365,15 @@ class CAS_Maestro {
         if( !isset( $user_info['role'] ) && $this->settings['wait_mail']['send_user'] ) {
           //If user has no role and is allowed to send wait mail to user
           $this->processMailing(WPCAS_WAITACCESS_MAIL,$user_info,$send_user);
+
         } elseif ( !isset( $user_info['role'] ) && !$this->settings['wait_mail']['send_user'] ) {
           //Otherwise, if has no role and we don't want a wait for access mail, send the welcome mail
           $this->processMailing(WPCAS_WELCOME_MAIL,$user_info,$send_user);
+
         } else {
           //In any other case, send a Welcome Mail
           $this->processMailing(WPCAS_WELCOME_MAIL,$user_info,$send_user);
+
         }
 
         $user = get_user_by('login',$username);
