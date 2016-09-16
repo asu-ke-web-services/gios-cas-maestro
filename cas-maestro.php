@@ -263,10 +263,10 @@ class CAS_Maestro {
       if (is_multisite()) {
         // this is multisite, so see if user is member of blog and is allowed to register
         if ($this->canUserRegister($username) && !is_user_member_of_blog( $user->ID, get_current_blog_id() )) {
-            do_action('casmaestro_before_register_user');
+            do_action('casmaestro_multisite_before_register_user');
             $nextrole = $this->canUserRegister($username);
             add_user_to_blog(get_current_blog_id(), $user->ID, $nextrole);
-            do_action('casmaestro_after_register_user');
+            do_action('casmaestro_multisite_after_register_user', $user);
         }
       }
       return $user;
