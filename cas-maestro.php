@@ -479,20 +479,27 @@ class CAS_Maestro {
     }
 
     /**
-     * Don't show password fields on user profile page.
+     * If user was authenticated via CAS, don't show password fields on their profile page.
+     * Conversely, let's not disable this filter for non-CAS users.
      */
     function show_password_fields($show_password_fields) {
-      return false;
+      if ( !$this->bypass_cas ) {
+        return false;
+      }
     }
 
     /**
      * Disable a function. To be hooked to an action
      *
-     * TODO: we need to be able to bypass this when a user is not CAS-authenticated (regular Wordpress users need to be able to perform these actions)
+     * We need to be able to bypass this when a user is not CAS-authenticated
+     * (regular Wordpress users need to be able to perform these actions)
+     * This is generally taken into account elsewhere, but just to be safe,
+     * we will "disable this disable" if the user is not CAS-authenticated
      */
     function disable_function() {
-      // only disable this action if the user was authenticated via CAS
-      die('Disabled');
+      if ( !$this->bypass_cas ) {
+        die('Disabled');
+      }
     }
 
   /*----------------------------------------------*
