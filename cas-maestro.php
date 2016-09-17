@@ -31,7 +31,6 @@ define('WPCAS_WAITACCESS_MAIL',1);
 |--------------------------------------------------------------------------
 */
 require_once 'vendors/asurite/asu_directory.php';
-require_once '/var/www/html/kint/Kint.class.php';
 
 /*
 |--------------------------------------------------------------------------
