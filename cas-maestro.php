@@ -174,9 +174,9 @@ class CAS_Maestro {
          */
         add_filter('authenticate', array(&$this, 'validate_login'), 30, 3);
         add_filter('login_url', array(&$this, 'bypass_reauth'));
-        add_action('lost_password', array(&$this, 'disable_function'));
-        add_action('retrieve_password', array(&$this, 'disable_function'));
-        add_action('password_reset', array(&$this, 'disable_function'));
+        //add_action('lost_password', array(&$this, 'disable_function'));
+        //add_action('retrieve_password', array(&$this, 'disable_function'));
+        //add_action('password_reset', array(&$this, 'disable_function'));
         if ($pagenow == 'profile.php') {
           add_filter('show_password_fields', array(&$this, 'show_password_fields'), 999);
         }
