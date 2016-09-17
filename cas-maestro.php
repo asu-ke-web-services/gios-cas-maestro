@@ -200,6 +200,7 @@ class CAS_Maestro {
 
     //Filter to rewrite the login form action to bypass cas
     if($this->bypass_cas) {
+      $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       add_filter('site_url', array(&$this, 'bypass_cas_login_form'), 20, 3);
       add_filter('authenticate', array(&$this, 'validate_noncas_login'), 30, 3);
     }
@@ -442,6 +443,7 @@ class CAS_Maestro {
   function bypass_cas_login_form( $url, $path, $orig_scheme ) {
     $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     if ( $this->bypass_cas ) {
+      $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       if ( $path=='wp-login.php' || $path=='wp-login.php?action=register' || $path == 'wp-login.php?action=lostpassword' || $path == 'wp-login.php?action=resetpass' ) {
         return add_query_arg( 'wp', '', $url );
       }
@@ -483,6 +485,7 @@ class CAS_Maestro {
      * Conversely, let's not disable this filter for non-CAS users.
      */
     function show_password_fields($show_password_fields) {
+      $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       if ( !$this->bypass_cas ) {
         return false;
       }
@@ -497,6 +500,7 @@ class CAS_Maestro {
      * we will "disable this disable" if the user is not CAS-authenticated
      */
     function disable_function() {
+      $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       if ( !$this->bypass_cas ) {
         die('Disabled');
       }
