@@ -455,6 +455,8 @@ class CAS_Maestro {
     $not_using_cas =isset($_SESSION['not_using_CAS']) && $_SESSION['not_using_CAS'] == true;
     session_destroy();
 
+    do_action('casmaestro_before_logout_redirect');
+
     if ( $not_using_cas ) {
       wp_redirect(home_url());
 
