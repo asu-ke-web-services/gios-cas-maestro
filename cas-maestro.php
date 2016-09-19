@@ -1,4 +1,5 @@
 <?php
+
 /*
 Plugin Name: CAS Maestro
 Plugin URL: http://nme.ist.utl.pt
@@ -14,6 +15,7 @@ Text Domain: CAS_Maestro
 | CONSTANTS
 |--------------------------------------------------------------------------
 */
+
 // plugin folder url
 if ( ! defined( 'CAS_MAESTRO_PLUGIN_URL' ) ) {
   define( 'CAS_MAESTRO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -44,7 +46,8 @@ class CAS_Maestro {
   /*
   --------------------------------------------*
   * Atributes
-  *--------------------------------------------*/
+  *--------------------------------------------
+  */
 
   public $settings;
   public $network_settings;
@@ -62,7 +65,8 @@ class CAS_Maestro {
   /*
   --------------------------------------------*
   * Constructor
-  *--------------------------------------------*/
+  *--------------------------------------------
+  */
 
   /**
    * Initializes the plugin by setting localization, filters, and administration functions.
@@ -122,7 +126,7 @@ class CAS_Maestro {
       session_start();
     }
 
-    $this->bypass_cas = defined( 'WPCAS_BYPASS' ) || isset( $_GET['wp'] ) || isset( $_GET['checkemail'] ) || ( isset( $_SESSION['not_using_CAS'] ) && $_SESSION['not_using_CAS'] == true );
+    $this->bypass_cas = defined( 'WPCAS_BYPASS' ) || isset( $_GET['wp'] ) || isset( $_GET['checkemail'] ) || ( isset( $_SESSION['not_using_CAS'] ) && $_SESSION['not_using_CAS'] === true );
     $this->init( ! $this->bypass_cas );
 
   }
@@ -132,15 +136,15 @@ class CAS_Maestro {
    * Plugin initialization, action & filters register, etc
    */
   function init( $run_cas = true ) {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     global $error;
     global $pagenow;
 
     if ( $run_cas ) {
       /**
-       * phpCAS initialization
+       * Initalize phpCAS
        *
-       * if setting hasn't been initalized (because original cas maestro plugin
+       * If setting hasn't been initialized (because original cas maestro plugin
        * had been installed, then set default value here
        */
       if ( empty( $this->settings['phpcas_path'] ) ) {
@@ -195,7 +199,7 @@ class CAS_Maestro {
     // Register the language initialization
     add_action( 'init' ,array( &$this, 'lang_init' ) );
     add_action( 'admin_init', array( &$this, 'add_meta_boxes' ) );
-    add_action( 'profile_update', array( &$this, 'onSaveProfile' ),10,2 );
+    add_action( 'profile_update', array( &$this, 'on_save_profile' ),10,2 );
     add_action( 'admin_notices', array( &$this, 'notify_email_update' ) );
 
     add_action( 'admin_menu', array( &$this, 'register_menus' ), 50 );
@@ -203,7 +207,7 @@ class CAS_Maestro {
 
     // Filter to rewrite the login form action to bypass cas
     if ( $this->bypass_cas ) {
-      $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
+      $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       add_filter( 'site_url', array( &$this, 'bypass_cas_login_form' ), 20, 3 );
       add_filter( 'authenticate', array( &$this, 'validate_noncas_login' ), 30, 3 );
     }
@@ -221,7 +225,7 @@ class CAS_Maestro {
   /**
    * Generates a random string with a lenght
    */
-  function generateRandomString( $length = 10 ) {
+  function generate_random_string( $length = 10 ) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&/()=?';
     $randomString = '';
     for ( $i = 0; $i < $length; $i++ ) {
@@ -233,10 +237,11 @@ class CAS_Maestro {
   /*
   ----------------------------------------------*
   * Authentication managment
-  *----------------------------------------------*/
+  *----------------------------------------------
+  */
 
   function validate_noncas_login( $user, $username, $password ) {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     // Add session to flag that user logged in without CAS
     if ( ! is_wp_error( $user ) ) {
       if ( ! isset( $_SESSION ) ) {
@@ -251,13 +256,13 @@ class CAS_Maestro {
    * Authenticate the user using CAS
    */
   function validate_login( $null, $username, $password ) {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     if ( ! $this->cas_configured ) {
       die( 'Error. CAS not configured and I was unable to redirect you to wp-login. Use define("WPCAS_BYPASS",true); in your wp-config.php to bypass wpCAS' );
     }
 
     phpCAS::forceAuthentication();
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : CAS isAuthenticated => ' . phpCAS::isAuthenticated() );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : CAS isAuthenticated => ' . phpCAS::isAuthenticated() );
 
     // might as well be paranoid
     if ( ! phpCAS::isAuthenticated() ) {
@@ -265,24 +270,24 @@ class CAS_Maestro {
     }
 
     $username = phpCAS::getUser();
-    $password = md5( $username . 'wpCASAuth!"#$"!$!"%$#"%#$' . rand() . $this->generateRandomString( 20 ) );
-    $this->__default_value( $user_email, '' );
-    $this->__default_value( $user_realname, '' );
-    $this->__default_value( $firstname, '' );
-    $this->__default_value( $lastname, '' );
+    $password = md5( $username . 'wpCASAuth!"#$"!$!"%$#"%#$' . rand() . $this->generate_random_string( 20 ) );
+    $this->_default_value( $user_email, '' );
+    $this->_default_value( $user_realname, '' );
+    $this->_default_value( $firstname, '' );
+    $this->_default_value( $lastname, '' );
 
     // lookup user in WordPress
     $user = get_user_by( 'login', $username );
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : WP user => ' );
-    $this->__write_log( $user );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : WP user => ' );
+    $this->_write_log( $user );
 
     if ( $user ) {
       // we found user, so check if this a multisite install
       if ( is_multisite() ) {
         // this is multisite, so see if user is member of blog and is allowed to register
-        if ( $this->canUserRegister( $username ) && ! is_user_member_of_blog( $user->ID, get_current_blog_id() ) ) {
+        if ( $this->can_user_register( $username ) && ! is_user_member_of_blog( $user->ID, get_current_blog_id() ) ) {
           do_action( 'casmaestro_multisite_before_register_user' );
-          $nextrole = $this->canUserRegister( $username );
+          $nextrole = $this->can_user_register( $username );
           add_user_to_blog( get_current_blog_id(), $user->ID, $nextrole );
           do_action( 'casmaestro_multisite_after_register_user', $user );
         }
@@ -291,7 +296,7 @@ class CAS_Maestro {
     }
 
     /** Register a new user, if it is allowed */
-    if ( $user_role = $this->canUserRegister( $username ) ) {
+    if ( $user_role = $this->can_user_register( $username ) ) {
       $user_email = '';
       $email_registration = $this->settings['email_registration'];
 
@@ -381,22 +386,22 @@ class CAS_Maestro {
       do_action( 'casmaestro_before_register_user' );
 
       $registration_result = wp_insert_user( $user_info );
-      $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : New user result => ' );
-      $this->__write_log( $registration_result );
+      $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : New user result => ' );
+      $this->_write_log( $registration_result );
 
       if ( ! is_wp_error( $registration_result ) ) {
         $send_user = ! empty( $user_info['user_email'] ); // False, if user has no email
         if ( ! isset( $user_info['role'] ) && $this->settings['wait_mail']['send_user'] ) {
           // If user has no role and is allowed to send wait mail to user
-          $this->processMailing( WPCAS_WAITACCESS_MAIL,$user_info,$send_user );
+          $this->process_mailing( WPCAS_WAITACCESS_MAIL,$user_info,$send_user );
 
         } elseif ( ! isset( $user_info['role'] ) && ! $this->settings['wait_mail']['send_user'] ) {
           // Otherwise, if has no role and we don't want a wait for access mail, send the welcome mail
-          $this->processMailing( WPCAS_WELCOME_MAIL,$user_info,$send_user );
+          $this->process_mailing( WPCAS_WELCOME_MAIL,$user_info,$send_user );
 
         } else {
           // In any other case, send a Welcome Mail
-          $this->processMailing( WPCAS_WELCOME_MAIL,$user_info,$send_user );
+          $this->process_mailing( WPCAS_WELCOME_MAIL,$user_info,$send_user );
 
         }
 
@@ -417,10 +422,10 @@ class CAS_Maestro {
   }
 
   /**
-   * onSaveProfile
+   * Update User Profile
    *  Hook to verify if user email was correctly filled, and send a welcome email when that is done.
    */
-  function onSaveProfile( $user_id, $old_user_data ) {
+  function on_save_profile( $user_id, $old_user_data ) {
     $user = get_user_by( 'id',$user_id );
     $user_data['user_login'] = $user->user_login;
     $user_data['user_email'] = $user->user_email;
@@ -429,9 +434,9 @@ class CAS_Maestro {
     if ( $old_user_data->user_email == '' && $user->user_email != '' ) {
       if ( ! isset( $this->allowed_users[ $user->user_login ] ) && $this->settings['wait_mail']['send_user'] ) {
         // If user is waiting for access (not in the allowed list) and is allowed to send wait mail to user
-        $this->processMailing( WPCAS_WAITACCESS_MAIL,$user_data,true,false );
+        $this->process_mailing( WPCAS_WAITACCESS_MAIL,$user_data,true,false );
       } else {
-        $this->processMailing( WPCAS_WELCOME_MAIL,$user_data, true,false ); // Send welcome mail only to the user, and not the admin
+        $this->process_mailing( WPCAS_WELCOME_MAIL,$user_data, true,false ); // Send welcome mail only to the user, and not the admin
       }
     }
 
@@ -440,14 +445,14 @@ class CAS_Maestro {
     if ( $waiting && ! in_array( 'subscriber', $user->roles ) && $this->settings['wait_mail']['send_user'] ) {
       delete_user_meta( $user_id,'_wpcas_waiting' );
       // user permissions have been given, notify the user
-      $this->processMailing( WPCAS_WELCOME_MAIL, $user_data, true, false );
+      $this->process_mailing( WPCAS_WELCOME_MAIL, $user_data, true, false );
     }
   }
 
   function bypass_cas_login_form( $url, $path, $orig_scheme ) {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     if ( $this->bypass_cas ) {
-      $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
+      $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       if ( $path == 'wp-login.php' || $path == 'wp-login.php?action=register' || $path == 'wp-login.php?action=lostpassword' || $path == 'wp-login.php?action=resetpass' ) {
         return add_query_arg( 'wp', '', $url );
       }
@@ -456,7 +461,7 @@ class CAS_Maestro {
   }
 
   function process_logout() {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     $not_using_cas = isset( $_SESSION['not_using_CAS'] ) && $_SESSION['not_using_CAS'] == true;
     session_destroy();
 
@@ -482,7 +487,7 @@ class CAS_Maestro {
    * to wp-admin.
    */
   function bypass_reauth( $login_url ) {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     $login_url = remove_query_arg( 'reauth', $login_url );
     return $login_url;
   }
@@ -492,7 +497,7 @@ class CAS_Maestro {
    * Conversely, let's not disable this filter for non-CAS users.
    */
   function show_password_fields( $show_password_fields ) {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
     if ( ! $this->bypass_cas ) {
       return false;
     }
@@ -507,7 +512,7 @@ class CAS_Maestro {
    * we will "disable this disable" if the user is not CAS-authenticated
    */
   function disable_function() {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
     if ( ! $this->bypass_cas ) {
       die( 'Disabled' );
     }
@@ -516,10 +521,11 @@ class CAS_Maestro {
   /*
   ----------------------------------------------*
   * Administration Interface Functions
-  *----------------------------------------------*/
+  *----------------------------------------------
+  */
 
   function notify_email_update() {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     $user = wp_get_current_user();
     if ( empty( $user->user_email ) ) {
       echo '<div class="updated">
@@ -564,7 +570,7 @@ class CAS_Maestro {
     }
     // let's not try to add action if no settings page is available
     if ( ! empty( $settings_page ) ) {
-      add_action( "load-{$settings_page}", array( &$this, 'onLoad_settings_page' ) );
+      add_action( "load-{$settings_page}", array( &$this, 'on_load_settings_page' ) );
     }
   }
 
@@ -672,7 +678,7 @@ class CAS_Maestro {
     }
   }
 
-  function onLoad_settings_page() {
+  function on_load_settings_page() {
     if ( isset( $_POST['submit'] ) && $_POST['submit'] ) {
       global $output_error;
       $this->save_settings();
@@ -786,7 +792,8 @@ class CAS_Maestro {
   /*
   ----------------------------------------------*
   * Auxiliary Functions
-  *----------------------------------------------*/
+  *----------------------------------------------
+  */
 
   /**
    * Return WordPress role if username is in the list of allowed usernames, or
@@ -796,7 +803,7 @@ class CAS_Maestro {
    * @param  [type] $username [description]
    * @return [type]           [description]
    */
-  function canUserRegister( $username ) {
+  function can_user_register( $username ) {
     if ( isset( $this->allowed_users[ $username ] ) ) {
       return $this->allowed_users[ $username ];
     }
@@ -808,24 +815,12 @@ class CAS_Maestro {
     return false;
   }
 
-  private function getUserRole( $user ) {
-    global $wp_roles;
-
-    if ( ! isset( $wp_roles ) ) {
-      $wp_roles = new WP_Roles();
-    }
-
-    foreach ( $wp_roles->role_names as $role => $name ) :
-      return $role;
-    endforeach;
-  }
-
   /**
    * Process the mailing, sending a $type mail to the user and
    *   notifing the admin (if notification setting is true)
    */
-  private function processMailing( $type, array $user_info, $send_to_user = true, $send_to_admin = true ) {
-    $this->__write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
+  private function process_mailing( $type, array $user_info, $send_to_user = true, $send_to_admin = true ) {
+    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     // Global sender is always the same.
     $from_mail = $this->settings['global_sender'];
     // Populate the variables, acording to the mail type
@@ -891,7 +886,7 @@ class CAS_Maestro {
 
   }
 
-  private function __write_log( $log ) {
+  private function _write_log( $log ) {
     if ( true === WP_DEBUG ) {
       if ( is_array( $log ) || is_object( $log ) ) {
         error_log( print_r( $log, true ) . PHP_EOL, 3, 'cas_maestro_debug.log' );
@@ -901,7 +896,7 @@ class CAS_Maestro {
     }
   }
 
-  private function __default_value( &$var, $default ) {
+  private function _default_value( &$var, $default ) {
     if ( empty( $var ) ) {
       $var = $default;
     }
