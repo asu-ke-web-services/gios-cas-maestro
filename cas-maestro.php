@@ -227,7 +227,7 @@ Welcome aboard!',
   }
 
   /**
-   * Generates a random string with a lenght
+   * Generates a random string with a length
    */
   function generate_random_string( $length = 10 ) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&/()=?';
