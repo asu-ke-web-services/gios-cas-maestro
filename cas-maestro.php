@@ -1,9 +1,9 @@
 <?php
 
 /*
-Plugin Name: CAS Maestro
+Plugin Name: GIOS CAS Maestro
 Plugin URL: http://nme.ist.utl.pt
-Description: CAS plugin with LDAP integration
+Description: CAS authentication plugin customized for use by the ASU Julie Ann Wrigley Global Institute of Sustainability
 Version: 1.1.3
 Author: NME - Núcleo de Multimédia e E-Learning.
 Author URI: http://nme.ist.utl.pt
