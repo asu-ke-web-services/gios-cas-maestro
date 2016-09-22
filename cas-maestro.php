@@ -78,9 +78,9 @@ class CAS_Maestro {
         'new_user' => false,
           'email_suffix' => '',
           'cas_version' => '1.0',
-          'server_hostname' => 'yourschool.edu',
+          'server_hostname' => 'weblogin.asu.edu',
           'server_port' => '443',
-          'server_path' => '',
+          'server_path' => 'cas',
           'phpcas_path' => 'phpCAS/',
           'debug_path' => '',
           'redirect_url' => get_option( 'siteurl' ),
@@ -95,8 +95,12 @@ class CAS_Maestro {
           'welcome_mail' => array(
               'send_user' => true,
               'send_global' => false,
-              'subject' => '',
-              'user_body' => '',
+              'subject' => 'Welcome to %sitename%',
+              'user_body' => 'Hello %realname%,
+
+Welcome to %sitename%! Your account has been activated, and you are now able to access restricted features of %sitename%, depending on the access permissions granted to your account. You can sign in to %sitename% by going to the site and adding the following text to the end of the site\'s URL in your browser address bar: /wp-admin
+
+Welcome aboard!',
               'global_body' => '',
             ),
           // Waiting for access email
