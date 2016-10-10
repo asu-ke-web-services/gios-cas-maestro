@@ -38,6 +38,38 @@ Features included:
 
 **Did you know...** If you leave empty fields in CAS Maestro configuration, the plugin will ask you to fill fields before final activation. Therefore you can use WordPress login system before the configuration conclusion.
 
+## Action and Filter hooks used and provided by CAS Maestro
+
+CAS Maestro overrides the following WordPress filters:
+
+* authenticate
+* login_url
+* show_password_fields
+* site_url
+
+It also overrides the following WordPress actions:
+
+* admin_init
+* admin_notices
+* admin_menu
+* lost_password
+* password_reset
+* profile_update
+* retrieve_password
+* wp_logout
+
+Now, CAS Maestro offers additional action hooks for extra processing during login and logout:
+
+* casmaestro_before_register_user()
+* casmaestro_multisite_before_register_user()
+* casmaestro_after_register_user( int|WP_User )
+* casmaestro_multisite_after_register_user( int|WP_User )
+* casmaestro_before_logout_redirect()
+
+The "_register_user" actions allow for extra actions to be inserted before and after a new user account is created in Wordpress. "_after_register_user" requires the user id or WP_User object to be passed in the arguments.
+
+Separate hooks are registered for multisite configurations, since new user registration can be a different process when they already have an account and only need to be added as a member of this specific blog).
+
 ## Frequently Asked Questions
 
 **In case that I cannot access the content manager due to a misconfiguration of this plugin, what steps should I perform?**
