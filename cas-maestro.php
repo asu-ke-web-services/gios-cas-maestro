@@ -34,7 +34,7 @@ define( 'WPCAS_WAITACCESS_MAIL',1 );
 | Load ASU Directory utility class
 |--------------------------------------------------------------------------
 */
-require_once 'vendors/asurite/asu_isearch.php';
+require_once 'vendors/asu-public-directory-service/src/AsuDirectory.php';
 
 /*
 |--------------------------------------------------------------------------
