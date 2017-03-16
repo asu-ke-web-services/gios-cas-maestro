@@ -9,8 +9,14 @@
         }
     ],
     "license": "GPL v2",
+    "repositories": [
+        {
+            "url": "https://github.com/gios-asu/asu-public-directory-service",
+            "type": "git"
+        }
+    ],
     "require": {
-        "gios-asu/asu-public-directory-service"
+        "gios-asu/asu-public-directory-service": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "5.7.*"
