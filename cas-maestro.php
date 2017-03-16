@@ -361,17 +361,19 @@ Welcome aboard!',
           break;
 
         case 5: // Using ASURITE iSearch attributes
-          $directory_info = ASUiSearch::get_isearch_info_by_asurite( $username );
-          if ( ! empty( ASUiSearch::get_email_from_isearch_info( $directory_info ) ) ) {
-            $user_email = ASUiSearch::get_email_from_isearch_info( $directory_info );
+          $directory_info = AsuDirectory::getDirectoryInfoByAsurite( $username );
+          if ( ! empty( AsuDirectory::getEmail( $directory_info ) ) ) {
+            $user_email = AsuDirectory::getEmail( $directory_info );
           }
-          if ( ! empty( ASUiSearch::get_first_name_from_isearch_info( $directory_info ) ) ) {
-            $firstname = ASUiSearch::get_first_name_from_isearch_info( $directory_info );
+          if ( ! empty( AsuDirectory::getFirstName( $directory_info ) ) ) {
+            $firstname = AsuDirectory::getFirstName( $directory_info );
           }
-          if ( ! empty( ASUiSearch::get_last_name_from_isearch_info( $directory_info ) ) ) {
-            $lastname = ASUiSearch::get_last_name_from_isearch_info( $directory_info );
+          if ( ! empty( AsuDirectory::getLastName( $directory_info ) ) ) {
+            $lastname = AsuDirectory::getLastName( $directory_info );
           }
-          $user_realname = $firstname . ' ' . $lastname;
+          if ( ! empty( AsuDirectory::getDisplayName( $directory_info ) ) ) {
+            $user_realname = AsuDirectory::getDisplayName( $directory_info );
+          }
           break;
 
         default: // No email predition
