@@ -34,7 +34,8 @@ define( 'WPCAS_WAITACCESS_MAIL',1 );
 | Load ASU Directory utility class
 |--------------------------------------------------------------------------
 */
-require_once 'vendors/asurite/asu_directory.php';
+use Gios_Asu\AsuPublicDirectoryService\AsuDirectory;
+require_once 'vendor/gios-asu/asu-public-directory-service/src/AsuDirectory.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -140,7 +141,6 @@ Welcome aboard!',
    * Plugin initialization, action & filters register, etc
    */
   function init( $run_cas = true ) {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     global $error;
     global $pagenow;
 
@@ -217,7 +217,6 @@ Welcome aboard!',
 
     // Filter to rewrite the login form action to bypass cas
     if ( $this->bypass_cas ) {
-      $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       add_filter( 'site_url', array( &$this, 'bypass_cas_login_form' ), 20, 3 );
       add_filter( 'authenticate', array( &$this, 'validate_noncas_login' ), 30, 3 );
     }
@@ -251,7 +250,6 @@ Welcome aboard!',
   */
 
   function validate_noncas_login( $user, $username, $password ) {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     // Add session to flag that user logged in without CAS
     if ( ! is_wp_error( $user ) ) {
       if ( ! isset( $_SESSION ) ) {
@@ -266,13 +264,11 @@ Welcome aboard!',
    * Authenticate the user using CAS
    */
   function validate_login( $null, $username, $password ) {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     if ( ! $this->cas_configured ) {
       die( 'Error. CAS not configured and I was unable to redirect you to wp-login. Use define("WPCAS_BYPASS",true); in your wp-config.php to bypass wpCAS' );
     }
 
     phpCAS::forceAuthentication();
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : CAS isAuthenticated => ' . phpCAS::isAuthenticated() );
 
     // might as well be paranoid
     if ( ! phpCAS::isAuthenticated() ) {
@@ -288,8 +284,7 @@ Welcome aboard!',
 
     // lookup user in WordPress
     $user = get_user_by( 'login', $username );
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : WP user => ' );
-    $this->_write_log( $user );
+    //$this->_write_log( $user );
 
     if ( $user ) {
       // we found user, so check if this a multisite install
@@ -359,18 +354,20 @@ Welcome aboard!',
           $user_realname = $firstname . ' ' . $lastname;
           break;
 
-        case 5: // Using ASURITE Directory attributes
-          $directory_info = AsuDirectory::get_directory_info_by_asurite( $username );
-          if ( ! empty( AsuDirectory::get_email_from_directory_info( $directory_info ) ) ) {
-            $user_email = AsuDirectory::get_email_from_directory_info( $directory_info );
+        case 5: // Using ASURITE iSearch attributes
+          $directory_info = AsuDirectory::getDirectoryInfoByAsurite( $username );
+          if ( ! empty( AsuDirectory::getEmail( $directory_info ) ) ) {
+            $user_email = AsuDirectory::getEmail( $directory_info );
           }
-          if ( ! empty( AsuDirectory::get_first_name_from_directory_info( $directory_info ) ) ) {
-            $firstname = AsuDirectory::get_first_name_from_directory_info( $directory_info );
+          if ( ! empty( AsuDirectory::getFirstName( $directory_info ) ) ) {
+            $firstname = AsuDirectory::getFirstName( $directory_info );
           }
-          if ( ! empty( AsuDirectory::get_last_name_from_directory_info( $directory_info ) ) ) {
-            $lastname = AsuDirectory::get_last_name_from_directory_info( $directory_info );
+          if ( ! empty( AsuDirectory::getLastName( $directory_info ) ) ) {
+            $lastname = AsuDirectory::getLastName( $directory_info );
           }
-          $user_realname = $firstname . ' ' . $lastname;
+          if ( ! empty( AsuDirectory::getDisplayName( $directory_info ) ) ) {
+            $user_realname = AsuDirectory::getDisplayName( $directory_info );
+          }
           break;
 
         default: // No email predition
@@ -396,8 +393,8 @@ Welcome aboard!',
       do_action( 'casmaestro_before_register_user' );
 
       $registration_result = wp_insert_user( $user_info );
-      $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : New user result => ' );
-      $this->_write_log( $registration_result );
+      //$this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : New user result => ' );
+      //$this->_write_log( $registration_result );
 
       if ( ! is_wp_error( $registration_result ) ) {
         $send_user = ! empty( $user_info['user_email'] ); // False, if user has no email
@@ -460,9 +457,7 @@ Welcome aboard!',
   }
 
   function bypass_cas_login_form( $url, $path, $orig_scheme ) {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     if ( $this->bypass_cas ) {
-      $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
       if ( $path == 'wp-login.php' || $path == 'wp-login.php?action=register' || $path == 'wp-login.php?action=lostpassword' || $path == 'wp-login.php?action=resetpass' ) {
         return add_query_arg( 'wp', '', $url );
       }
@@ -471,7 +466,6 @@ Welcome aboard!',
   }
 
   function process_logout() {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     $not_using_cas = isset( $_SESSION['not_using_CAS'] ) && $_SESSION['not_using_CAS'] == true;
     session_destroy();
 
@@ -497,7 +491,6 @@ Welcome aboard!',
    * to wp-admin.
    */
   function bypass_reauth( $login_url ) {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     $login_url = remove_query_arg( 'reauth', $login_url );
     return $login_url;
   }
@@ -507,7 +500,6 @@ Welcome aboard!',
    * Conversely, let's not disable this filter for non-CAS users.
    */
   function show_password_fields( $show_password_fields ) {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
     if ( ! $this->bypass_cas ) {
       return false;
     }
@@ -522,7 +514,6 @@ Welcome aboard!',
    * we will "disable this disable" if the user is not CAS-authenticated
    */
   function disable_function() {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : bypass_cas => ' . $this->bypass_cas );
     if ( ! $this->bypass_cas ) {
       die( 'Disabled' );
     }
@@ -535,7 +526,6 @@ Welcome aboard!',
   */
 
   function notify_email_update() {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     $user = wp_get_current_user();
     if ( empty( $user->user_email ) ) {
       echo '<div class="updated">
@@ -830,7 +820,6 @@ Welcome aboard!',
    *   notifing the admin (if notification setting is true)
    */
   private function process_mailing( $type, array $user_info, $send_to_user = true, $send_to_admin = true ) {
-    $this->_write_log( __CLASS__ . '.' . __FUNCTION__ . ' (' . __LINE__ . ') : ' );
     // Global sender is always the same.
     $from_mail = $this->settings['global_sender'];
     // Populate the variables, acording to the mail type
