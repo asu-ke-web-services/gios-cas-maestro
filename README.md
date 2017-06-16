@@ -15,13 +15,14 @@ This is a customized and updated version of the CAS Maestro plugin. It has been 
 
 Note that the plugin is already configured to work with the ASU CAS service. However, you will want to adjust other settings, such as whether new users are automatically registered using the Subscriber role, whether to use the ASU Directory service to pre-populate the user profile fields, and so on.
 
-**ATTENTION** If for some reason you are unable to access the administrator panel, you can disable the CAS Maestro behavior in one of two ways:
-1. The following URL bypasses the plugin in favor of the regular WordPress login screen. `/wp-login?wp`
+## Troubleshooting ##
+If for some reason you are unable to access the administrator panel, you can disable the CAS Maestro behavior in one of two ways:
+1. The following URL bypasses the plugin in favor of the regular WordPress login screen. `/wp-login.php?wp`
 2. Adding the code line `define('WPCAS_BYPASS',true);` to `wp-config.php` file will also bypass the plugin. 
 
 Once signed in, you can access the plugin's settings at `wp-admin/options-general.php?page=wpcas_settings` to make further adjustments.
 
-**Did you know...** If you leave empty fields in CAS Maestro configuration, the plugin will ask you to fill fields before final activation. Therefore you can use WordPress login system before the configuration conclusion.
+If you happen to leave empty fields in CAS Maestro configuration, the plugin will ask you to fill fields before final activation. Therefore you can continue to use the normal WordPress login screen until all settings have been completed, even if the plugin is active.
 
 ## Action and Filter hooks used and provided by the GIOS CAS Maestro plugin
 
