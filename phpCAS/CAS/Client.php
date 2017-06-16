@@ -3599,11 +3599,16 @@ class CAS_Client
                 $server_port = $ports[0];
             }
 
-            if ( ($this->_isHttps() && $server_port!=443)
-                || (!$this->_isHttps() && $server_port!=80)
-            ) {
-                $server_url .= ':';
-                $server_url .= $server_port;
+            // Web hosting via Pantheon produces a conflict which sets isHttps=true and $server_port=80
+            // Result of that error is an SSL_ERROR_RX_RECORD_TOO_LONG error in the browser upon redirect from webhost.asu.edu
+            // Current solution below is to not append a server port if you are running in Pantheon. Otherwise, do as originally intended.
+            if (!defined('PANTHEON_ENVIRONMENT')) {
+                if ( ($this->_isHttps() && $server_port!=443)
+                    || (!$this->_isHttps() && $server_port!=80)
+                ) {
+                    $server_url .= ':';
+                    $server_url .= $server_port;
+                }
             }
         }
         return $server_url;
