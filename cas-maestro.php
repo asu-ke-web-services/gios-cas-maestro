@@ -4,7 +4,7 @@
 Plugin Name: GIOS CAS Maestro
 Plugin URL: https://github.com/gios-asu/gios-cas-maestro
 Description: CAS authentication plugin customized for use by the ASU Julie Ann Wrigley Global Institute of Sustainability
-Version: 1.2.0
+Version: 1.2.1
 Author: NME - Núcleo de Multimédia e E-Learning.
 Author URI: http://nme.ist.utl.pt
 Text Domain: CAS_Maestro
