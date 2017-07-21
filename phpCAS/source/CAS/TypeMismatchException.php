@@ -19,50 +19,52 @@
  *
  * PHP Version 5
  *
- * @class    CAS/ProxyTicketException.php
+ * @file     CAS/InvalidArgumentException.php
  * @category Authentication
  * @package  PhpCAS
  * @author   Adam Franco <afranco@middlebury.edu>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
- *
  */
 
 /**
- * An Exception for errors related to fetching or validating proxy tickets.
+ * Exception that denotes invalid arguments were passed.
  *
- * @class    CAS_ProxyTicketException
+ * @class    CAS_InvalidArgumentException
  * @category Authentication
  * @package  PhpCAS
  * @author   Adam Franco <afranco@middlebury.edu>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
-class CAS_ProxyTicketException
-extends BadMethodCallException
-implements CAS_Exception
+class CAS_TypeMismatchException
+extends CAS_InvalidArgumentException
 {
-
     /**
-     * Constructor
+     * Constructor, provides a nice message.
      *
-     * @param string $message Message text
-     * @param int    $code    Error code
+     * @param mixed   $argument     Argument
+     * @param string  $argumentName Argument Name
+     * @param string  $type         Type
+     * @param string  $message      Error Message
+     * @param integer $code         Code
      *
      * @return void
      */
-    public function __construct ($message, $code = PHPCAS_SERVICE_PT_FAILURE)
-    {
-        // Warn if the code is not in our allowed list
-        $ptCodes = array(
-        PHPCAS_SERVICE_PT_FAILURE,
-        PHPCAS_SERVICE_PT_NO_SERVER_RESPONSE,
-        PHPCAS_SERVICE_PT_BAD_SERVER_RESPONSE,
-        );
-        if (!in_array($code, $ptCodes)) {
-            trigger_error('Invalid code '.$code.' passed. Must be one of PHPCAS_SERVICE_PT_FAILURE, PHPCAS_SERVICE_PT_NO_SERVER_RESPONSE, or PHPCAS_SERVICE_PT_BAD_SERVER_RESPONSE.');
+    public function __construct (
+        $argument, $argumentName, $type, $message = '', $code = 0
+    ) {
+        if (is_object($argument)) {
+            $foundType = get_class($argument).' object';
+        } else {
+            $foundType = gettype($argument);
         }
 
-        parent::__construct($message, $code);
+        parent::__construct(
+            'type mismatched for parameter '
+            . $argumentName . ' (should be \'' . $type .' \'), '
+            . $foundType . ' given. ' . $message, $code
+        );
     }
 }
+?>

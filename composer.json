@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "gios-asu/asu-public-directory-service": "dev-master"
+        "gios-asu/asu-public-directory-service": "dev-master",
+        "jasig/phpcas": "^1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "5.7.*"

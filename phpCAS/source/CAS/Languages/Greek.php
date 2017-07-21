@@ -19,28 +19,28 @@
  *
  * PHP Version 5
  *
- * @file     CAS/Language/German.php
+ * @file     CAS/Language/Greek.php
  * @category Authentication
  * @package  PhpCAS
- * @author   Henrik Genssen <hg@mediafactory.de>
+ * @author   Vangelis Haniotakis <haniotak@ucnet.uoc.gr>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  */
 
 /**
- * German language class
+ * Greek language class
  *
- * @class    CAS_Languages_German
+ * @class    CAS_Languages_Greek
  * @category Authentication
  * @package  PhpCAS
- * @author   Henrik Genssen <hg@mediafactory.de>
+ * @author   Vangelis Haniotakis <haniotak@ucnet.uoc.gr>
  * @license  http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link     https://wiki.jasig.org/display/CASC/phpCAS
  *
  * @sa @link internalLang Internationalization @endlink
  * @ingroup internalLang
  */
-class CAS_Languages_German implements CAS_Languages_LanguageInterface
+class CAS_Languages_Greek implements CAS_Languages_LanguageInterface
 {
     /**
      * Get the using server string
@@ -49,7 +49,7 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
      */
     public function getUsingServer()
     {
-        return 'via Server';
+        return 'χρησιμοποιείται ο εξυπηρετητής';
     }
 
     /**
@@ -59,7 +59,7 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
      */
     public function getAuthenticationWanted()
     {
-        return 'CAS Authentifizierung erforderlich!';
+        return 'Απαιτείται η ταυτοποίηση CAS!';
     }
 
     /**
@@ -69,7 +69,7 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
      */
     public function getLogout()
     {
-        return 'CAS Abmeldung!';
+        return 'Απαιτείται η αποσύνδεση από CAS!';
     }
 
     /**
@@ -79,7 +79,7 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
      */
     public function getShouldHaveBeenRedirected()
     {
-        return 'eigentlich h&auml;ten Sie zum CAS Server weitergeleitet werden sollen. Dr&uuml;cken Sie <a href="%s">hier</a> um fortzufahren.';
+        return 'Θα έπρεπε να είχατε ανακατευθυνθεί στον εξυπηρετητή CAS. Κάντε κλίκ <a href="%s">εδώ</a> για να συνεχίσετε.';
     }
 
     /**
@@ -89,7 +89,7 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
      */
     public function getAuthenticationFailed()
     {
-        return 'CAS Anmeldung fehlgeschlagen!';
+        return 'Η ταυτοποίηση CAS απέτυχε!';
     }
 
     /**
@@ -99,7 +99,7 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
      */
     public function getYouWereNotAuthenticated()
     {
-        return '<p>Sie wurden nicht angemeldet.</p><p>Um es erneut zu versuchen klicken Sie <a href="%s">hier</a>.</p><p>Wenn das Problem bestehen bleibt, kontkatieren Sie den <a href="mailto:%s">Administrator</a> dieser Seite.</p>';
+        return '<p>Δεν ταυτοποιηθήκατε.</p><p>Μπορείτε να ξαναπροσπαθήσετε, κάνοντας κλίκ <a href="%s">εδώ</a>.</p><p>Εαν το πρόβλημα επιμείνει, ελάτε σε επαφή με τον <a href="mailto:%s">διαχειριστή</a>.</p>';
     }
 
     /**
@@ -109,8 +109,7 @@ class CAS_Languages_German implements CAS_Languages_LanguageInterface
      */
     public function getServiceUnavailable()
     {
-        return 'Der Dienst `<b>%s</b>\' ist nicht verf&uuml;gbar (<b>%s</b>).';
+        return 'Η υπηρεσία `<b>%s</b>\' δεν είναι διαθέσιμη (<b>%s</b>).';
     }
 }
-
 ?>
