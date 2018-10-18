@@ -536,30 +536,38 @@ Welcome aboard!',
 
   function register_menus() {
     // If you wanna change the capability to edit authorized users, filter on this hook.
-    $this->change_users_capability = apply_filters('cas_maestro_change_users_capability',
-    $this->change_users_capability);
+    $this->change_users_capability = apply_filters(
+      'cas_maestro_change_users_capability',
+      $this->change_users_capability
+    );
 
     if ( current_user_can( 'manage_options' ) ) {
       switch ( $this->settings['cas_menu_location'] ) {
         case 'sidebar':
-          $settings_page = add_menu_page(__( 'CAS Maestro Settings', 'CAS_Maestro' ),
+          $settings_page = add_menu_page(
+              __( 'CAS Maestro Settings', 'CAS_Maestro' ),
               __( 'CAS Maestro', 'CAS_Maestro' ),
               'manage_options',
               'wpcas_settings',
               array( &$this,'admin_interface' ),
               '',
-          214);
+              214
+          );
           break;
         case 'settings':
         default:
-          $settings_page = add_options_page(__( 'CAS Maestro', 'CAS_Maestro' ),
-              __( 'CAS Maestro', 'CAS_Maestro' ), 8,
-              'wpcas_settings',
-          array( &$this,'admin_interface' ));
+          $settings_page = add_options_page(
+            __( 'CAS Maestro', 'CAS_Maestro' ),
+            __( 'CAS Maestro', 'CAS_Maestro' ),
+            'manage_options',
+            'wpcas_settings',
+            array( &$this,'admin_interface' )
+          );
           break;
       }
     } elseif ( ! current_user_can( 'manage_options' ) && current_user_can( $this->change_users_capability ) ) {
-      $settings_page = add_menu_page(__( 'CAS Maestro Settings', 'CAS_Maestro' ),
+      $settings_page = add_menu_page(
+          __( 'CAS Maestro Settings', 'CAS_Maestro' ),
           __( 'CAS Maestro', 'CAS_Maestro' ),
           $this->change_users_capability,
           'wpcas_settings',
