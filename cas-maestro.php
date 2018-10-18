@@ -552,10 +552,13 @@ Welcome aboard!',
           break;
         case 'settings':
         default:
-          $settings_page = add_options_page(__( 'CAS Maestro', 'CAS_Maestro' ),
-              __( 'CAS Maestro', 'CAS_Maestro' ), 8,
-              'wpcas_settings',
-          array( &$this,'admin_interface' ));
+          $settings_page = add_options_page(
+            __( 'CAS Maestro', 'CAS_Maestro' ),
+            __( 'CAS Maestro', 'CAS_Maestro' ),
+            'manage_options',
+            'wpcas_settings',
+            array( &$this,'admin_interface' )
+          );
           break;
       }
     } elseif ( ! current_user_can( 'manage_options' ) && current_user_can( $this->change_users_capability ) ) {
