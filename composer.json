@@ -1,7 +1,7 @@
 {
     "name": "gios-asu/gios-cas-maestro",
     "description": "Custom version of the CAS Maestro WordPress plugin, including new Wordpress hooks to customize login and logout processes",
-    "type": "project",
+    "type": "wordpress-plugin",
     "authors": [
         {
             "name": "Nathan Rollins",
