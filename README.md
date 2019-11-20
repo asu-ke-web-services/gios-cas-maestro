@@ -8,8 +8,7 @@ This is a customized and updated version of the CAS Maestro plugin. It has been 
 
 ## Installation Instructions
 
-* **[Download the latest release package](https://github.com/gios-asu/gios-cas-maestro/releases/latest)**. [NOTE: The latest release package already includes all dependencies needed to activate this plugin on your server. If you download or clone the master branch directly from our repo, you must run `composer install` in the plugin folder in order to download and install the ASU Public Directory Service library that this plugin requires to function correctly.)
-* Upload the package to your server and unzip the package into the Wordpress plugins directory (`/wp-content/plugins/`).
+* **Clone this repo into your WordPress plugins directory (`/wp-content/plugins/`)**. [NOTE: When you download or clone the master branch directly from our repo, you must run `composer install` in the plugin folder in order to download and install the ASU Public Directory Service library that this plugin requires to function correctly.) Running `composer update` may be necessary to update the plugin for the version of PHP running on your webserver.
 * Activate the plugin in the Wordpress 'Plugins' menu.
 * Configure the plugin for specific settings on your site.
 
