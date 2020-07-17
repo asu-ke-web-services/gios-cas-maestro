@@ -1,6 +1,8 @@
 # GIOS CAS Maestro plugin
 
-**NOTE: This package is deprecated. It has been replaced by the [ASU CAS Maestro WordPress Plugin](https://github.com/asu-ke-web-services/ASU-CAS-Maestro-WordPress-Plugin).**
+## NOTE: This package is deprecated. It has been replaced by the [ASU CAS Maestro WordPress Plugin](https://github.com/asu-ke-web-services/ASU-CAS-Maestro-WordPress-Plugin).
+
+<hr />
 
 This is a customized and updated version of the CAS Maestro plugin. It has been updated with:
 
